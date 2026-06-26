@@ -641,7 +641,7 @@ function setStatus(msg) {
 function isWidgetMode() {
   // Samsung Family Hub board apps run in a smaller viewport
   // Also detectable via URL param ?widget=1 for testing
-  return window.innerWidth < 1000 || location.search.includes('widget=1');
+  return location.search.includes('widget=1');
 }
 
 function renderWidget() {
