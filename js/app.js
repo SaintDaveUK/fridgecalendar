@@ -86,6 +86,22 @@ function renderCalList() {
   });
 }
 
+function startClock() {
+  function tick() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clock-time').textContent = hh + ':' + mm + ':' + ss;
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('clock-date').textContent =
+      days[now.getDay()] + '  ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
 function init() {
   if (isWidgetMode()) {
     document.body.classList.add('widget-mode');
@@ -97,6 +113,8 @@ function init() {
     showSetup();
     return;
   }
+
+  startClock();
 
   const now = new Date();
   viewYear  = now.getFullYear();

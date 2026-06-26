@@ -17,7 +17,36 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 20px 28px 12px;
+  padding: 0 28px 12px;
+}
+
+#clock-bar {
+  height: 15vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 10px;
+}
+
+#clock-time {
+  font-size: 9vh;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  color: #f0f6fc;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+#clock-date {
+  font-size: 1.6vh;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7d8590;
 }
 
 #header {
@@ -271,18 +300,20 @@ body {
 
 #seven-day {
   display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
-  gap: 6px;
+  gap: 5px;
 }
 
 .sd-col {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background: rgba(255,255,255,0.03);
   border-radius: 10px;
   overflow: hidden;
+  min-height: 0;
 }
 
 .sd-col.weekend {
@@ -295,9 +326,13 @@ body {
 }
 
 .sd-header {
-  padding: 10px 10px 6px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 8px 14px;
+  border-right: 1px solid rgba(255,255,255,0.05);
   flex-shrink: 0;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sd-dayname {
@@ -312,7 +347,7 @@ body {
 .sd-col.today-col .sd-dayname { color: #58a6ff; }
 
 .sd-datenum {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 300;
   color: #f0f6fc;
   line-height: 1;
@@ -324,39 +359,43 @@ body {
 }
 
 .sd-weather {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: #7d8590;
   margin-top: 4px;
 }
 
 .sd-events {
   flex: 1;
-  padding: 6px;
+  padding: 5px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-height: 0;
+  flex-direction: row;
+  gap: 5px;
+  min-width: 0;
+  overflow: hidden;
+  align-items: center;
 }
 
 .sd-event {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  padding: 8px 10px;
+  padding: 6px 8px;
   border-radius: 3px;
-  border-left: none;
   border-top: 3px solid rgba(0,0,0,0.15);
   white-space: normal;
   word-break: break-word;
-  flex: 1;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  height: calc(100% - 10px);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 0;
-  max-height: 25%;
+  justify-content: center;
+  text-align: center;
   color: rgba(0,0,0,0.75) !important;
   box-shadow:
     2px 3px 7px rgba(0,0,0,0.25),
     inset 0 1px 2px rgba(255,255,255,0.3);
-  transform-origin: center top;
+  transform-origin: center center;
   transition: transform 0.15s, box-shadow 0.15s;
   position: relative;
 }
