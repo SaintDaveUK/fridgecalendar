@@ -1,9 +1,16 @@
-const ICS_URLS = [
-  {
-    url: 'https://calendar.google.com/calendar/ical/29e773d34c93fbcb224c62ecf172e888ecde1066cf93002bcb8f14e0fddef7e1%40group.calendar.google.com/private-4acc890a9462f0189f23f5e9513b1c8f/basic.ics',
-    color: '#4a9eff'
-  }
-];
+const COLORS = ['#4a9eff','#f97583','#85e89d','#ffab70','#b392f0','#79c0ff','#ffa657'];
+
+function getStoredCalendars() {
+  try {
+    return JSON.parse(localStorage.getItem('ics_urls') || '[]');
+  } catch { return []; }
+}
+
+function saveCalendars(list) {
+  localStorage.setItem('ics_urls', JSON.stringify(list));
+}
+
+let ICS_URLS = getStoredCalendars();
 
 const REFRESH_MS = 30 * 60 * 1000;
 const LABELS = {
@@ -23,10 +30,66 @@ const BAR_GAP = 2;  // px between bars
 
 let viewYear, viewMonth, allEvents = [], currentView = '7day', sevenDayOffset = 0;
 
+function showSetup() {
+  document.getElementById('setup').classList.add('visible');
+  document.getElementById('app').style.display = 'none';
+  renderCalList();
+
+  document.getElementById('cal-add-btn').addEventListener('click', () => {
+    const input = document.getElementById('cal-input');
+    const url = input.value.trim();
+    if (!url.includes('calendar.google.com') && !url.includes('.ics')) {
+      input.style.borderColor = '#f85149';
+      return;
+    }
+    const list = getStoredCalendars();
+    list.push({ url, color: COLORS[list.length % COLORS.length] });
+    saveCalendars(list);
+    ICS_URLS = list;
+    input.value = '';
+    input.style.borderColor = '';
+    renderCalList();
+  });
+
+  document.getElementById('setup-done-btn').addEventListener('click', () => {
+    if (getStoredCalendars().length === 0) return;
+    document.getElementById('setup').classList.remove('visible');
+    document.getElementById('app').style.display = '';
+    fetchAllCalendars();
+  });
+}
+
+function renderCalList() {
+  const list = getStoredCalendars();
+  const el = document.getElementById('cal-list');
+  el.innerHTML = '';
+  list.forEach((cal, i) => {
+    const row = document.createElement('div');
+    row.className = 'cal-entry';
+    row.innerHTML = `
+      <div class="cal-dot" style="background:${cal.color}"></div>
+      <div class="cal-url">${cal.url}</div>
+      <button class="cal-remove" data-i="${i}">✕</button>`;
+    row.querySelector('.cal-remove').addEventListener('click', () => {
+      const l = getStoredCalendars();
+      l.splice(i, 1);
+      saveCalendars(l);
+      ICS_URLS = l;
+      renderCalList();
+    });
+    el.appendChild(row);
+  });
+}
+
 function init() {
   if (isWidgetMode()) {
     document.body.classList.add('widget-mode');
     fetchAllCalendars();
+    return;
+  }
+
+  if (ICS_URLS.length === 0) {
+    showSetup();
     return;
   }
 

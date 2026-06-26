@@ -7,6 +7,17 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="setup">
+    <h1>Fridge Calendar Setup</h1>
+    <p>Paste your Google Calendar secret iCal URL below.<br>Found in Google Calendar → Settings → "Secret address in iCal format"</p>
+    <div id="cal-list"></div>
+    <div id="add-cal">
+      <input type="text" id="cal-input" placeholder="https://calendar.google.com/calendar/ical/...">
+      <button id="cal-add-btn">Add Calendar</button>
+    </div>
+    <button id="setup-done-btn">Done</button>
+  </div>
+
   <div id="widget">
     <div id="widget-header">
       <div id="widget-date-title"></div>

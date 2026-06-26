@@ -382,6 +382,120 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Setup screen ────────────────────────────────────────── */
+
+#setup {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 20px;
+  padding: 40px;
+  background: #0d1117;
+}
+
+#setup.visible { display: flex; }
+
+#setup h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #f0f6fc;
+}
+
+#setup p {
+  font-size: 0.95rem;
+  color: #7d8590;
+  text-align: center;
+  line-height: 1.6;
+}
+
+#cal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.cal-entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #8b949e;
+}
+
+.cal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-url {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cal-remove {
+  background: none;
+  border: none;
+  color: #f85149;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 4px;
+}
+
+#add-cal {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 700px;
+}
+
+#cal-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #f0f6fc;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+#cal-input:focus {
+  border-color: rgba(88,166,255,0.5);
+}
+
+#cal-add-btn, #setup-done-btn {
+  background: rgba(88,166,255,0.15);
+  border: 1px solid rgba(88,166,255,0.3);
+  color: #58a6ff;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#cal-add-btn:hover, #setup-done-btn:hover {
+  background: rgba(88,166,255,0.25);
+}
+
+#setup-done-btn {
+  background: rgba(88,166,255,0.25);
+  padding: 14px 48px;
+  font-size: 1rem;
+}
+
 /* ── Widget (minimized board) mode ───────────────────────── */
 
 body.widget-mode #app { display: none; }
