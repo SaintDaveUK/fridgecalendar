@@ -110,12 +110,6 @@ function startClock() {
 }
 
 function init() {
-  if (isWidgetMode()) {
-    document.body.classList.add('widget-mode');
-    fetchAllCalendars();
-    return;
-  }
-
   if (ICS_URLS.length === 0) {
     showSetup();
     return;
@@ -185,9 +179,7 @@ async function fetchAllCalendars() {
     }
   }));
   await Weather.init(allEvents);
-  if (document.body.classList.contains('widget-mode')) {
-    startWidgetClock();
-  } else if (currentView === '7day') {
+  if (currentView === '7day') {
     render7Day();
   } else {
     renderCalendar();
@@ -634,14 +626,6 @@ function formatTime(d) {
 
 function setStatus(msg) {
   document.getElementById('status').textContent = msg;
-}
-
-// ── Widget mode ───────────────────────────────────────────────────────────────
-
-function isWidgetMode() {
-  // Samsung Family Hub board apps run in a smaller viewport
-  // Also detectable via URL param ?widget=1 for testing
-  return location.search.includes('widget=1');
 }
 
 function renderWidget() {
