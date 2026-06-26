@@ -135,6 +135,7 @@ async function fetchAllCalendars() {
   await Promise.all(ICS_URLS.map(async ({ url, color }) => {
     try {
       const proxies = [
+        () => 'calendar.ics',
         u => u,
         u => 'https://corsproxy.io/?' + encodeURIComponent(u),
         u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
