@@ -99,7 +99,7 @@ function startClock() {
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
     const ss = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('clock-time').textContent = hh + ':' + mm + ':' + ss;
+    document.getElementById('clock-time').textContent = hh + ':' + mm;
     const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     document.getElementById('clock-date').textContent =
