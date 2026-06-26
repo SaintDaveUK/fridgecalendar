@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>Fridge Calendar</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="widget">
+    <div id="widget-header">
+      <div id="widget-date-title"></div>
+      <div id="widget-time"></div>
+    </div>
+    <div id="widget-seven-day"></div>
+  </div>
+
+  <div id="app">
+    <div id="header">
+      <div id="header-left">
+        <div id="lang-switcher">
+          <button id="btn-en" class="lang-btn active">EN</button>
+          <button id="btn-es" class="lang-btn">ES</button>
+        </div>
+        <button id="btn-prev" class="nav-btn">&#8249;</button>
+      </div>
+      <div id="month-title"></div>
+      <div id="header-right">
+        <div id="view-switcher">
+          <button id="btn-7day" class="lang-btn active">7 Days</button>
+          <button id="btn-month" class="lang-btn">Month</button>
+        </div>
+        <button id="btn-next" class="nav-btn">&#8250;</button>
+      </div>
+    </div>
+    <div id="week-subtitle"></div>
+    <div id="day-labels" style="display:none">
+      <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+    </div>
+    <div id="seven-day"></div>
+    <div id="calendar-grid" style="display:none"></div>
+    <div id="status"></div>
+  </div>
+  <script src="js/ical.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
