@@ -202,7 +202,7 @@ function setView(v) {
   if (v === '7day') {
     calendarGrid.style.display = 'none';
     dayLabels.style.display    = 'none';
-    sevenDay.style.display     = 'flex';
+    sevenDay.style.cssText = 'display:flex;flex-direction:column;flex:1;min-height:0;gap:5px;';
     sevenDayOffset = 0;
     render7Day();
   } else {
@@ -319,10 +319,14 @@ function render7Day() {
     col.className = 'sd-col' +
       (isWeekend ? ' weekend'   : '') +
       (isToday   ? ' today-col' : '');
+    col.style.cssText = 'display:flex;flex-direction:row;flex:1;min-height:0;border-radius:10px;overflow:hidden;' +
+      (isWeekend ? 'background:rgba(255,200,100,0.05);' : 'background:rgba(255,255,255,0.03);') +
+      (isToday   ? 'background:rgba(88,166,255,0.08);outline:1.5px solid rgba(88,166,255,0.3);' : '');
 
     // Header
     const header = document.createElement('div');
     header.className = 'sd-header';
+    header.style.cssText = 'width:110px;flex-shrink:0;padding:8px 14px;border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;justify-content:center;';
 
     const dayName = document.createElement('div');
     dayName.className = 'sd-dayname';
@@ -347,6 +351,7 @@ function render7Day() {
     // Events
     const eventsDiv = document.createElement('div');
     eventsDiv.className = 'sd-events';
+    eventsDiv.style.cssText = 'flex:1;display:flex;flex-direction:row;align-items:center;gap:5px;padding:5px;min-width:0;overflow:hidden;';
 
     const dayStart = date;
     const dayEnd   = addDays(date, 1);
@@ -359,9 +364,7 @@ function render7Day() {
       const chip = document.createElement('div');
       chip.className = 'sd-event multiday';
       const msMulti = noteStyle(ev.title || '', date);
-      chip.style.background = msMulti.bg;
-      chip.style.transform  = `rotate(${msMulti.rotation}deg)`;
-      chip.style.color      = 'rgba(0,0,0,0.72)';
+      chip.style.cssText = `background:${msMulti.bg};transform:rotate(${msMulti.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:0.72rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       chip.textContent = ev.title || 'Event';
       eventsDiv.appendChild(chip);
     });
@@ -374,12 +377,8 @@ function render7Day() {
         const chip = document.createElement('div');
         chip.className = 'sd-event';
         const ns = noteStyle(ev.title || '', date);
-        chip.style.background = ns.bg;
-        chip.style.transform  = `rotate(${ns.rotation}deg)`;
-        chip.style.color      = 'rgba(0,0,0,0.72)';
+        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:0.72rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
         const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
-        chip.style.flexDirection = 'column';
-        chip.style.alignItems = 'flex-start';
         if (!allDay) {
           const timeDiv = document.createElement('div');
           timeDiv.style.fontWeight = '800';
