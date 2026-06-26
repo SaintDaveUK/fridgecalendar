@@ -1,9 +1,14 @@
 const COLORS = ['#4a9eff','#f97583','#85e89d','#ffab70','#b392f0','#79c0ff','#ffa657'];
 
+const DEFAULT_CALENDARS = [
+  { url: 'https://calendar.google.com/calendar/ical/29e773d34c93fbcb224c62ecf172e888ecde1066cf93002bcb8f14e0fddef7e1%40group.calendar.google.com/private-4acc890a9462f0189f23f5e9513b1c8f/basic.ics', color: '#4a9eff' }
+];
+
 function getStoredCalendars() {
   try {
-    return JSON.parse(localStorage.getItem('ics_urls') || '[]');
-  } catch { return []; }
+    const stored = JSON.parse(localStorage.getItem('ics_urls') || '[]');
+    return stored.length ? stored : DEFAULT_CALENDARS;
+  } catch { return DEFAULT_CALENDARS; }
 }
 
 function saveCalendars(list) {
