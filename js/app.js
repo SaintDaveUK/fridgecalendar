@@ -134,13 +134,21 @@ async function fetchAllCalendars() {
   allEvents = [];
   await Promise.all(ICS_URLS.map(async ({ url, color }) => {
     try {
-      setStatus('Trying direct fetch...');
-      let res = await fetch(url).catch(() => null);
-      if (!res || !res.ok) {
-        setStatus('Trying proxy...');
-        res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+      const proxies = [
+        u => u,
+        u => 'https://corsproxy.io/?' + encodeURIComponent(u),
+        u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+        u => 'https://thingproxy.freeboard.io/fetch/' + u,
+      ];
+      let res = null;
+      for (const proxy of proxies) {
+        try {
+          setStatus('Fetching calendar...');
+          res = await fetch(proxy(url));
+          if (res && res.ok) break;
+        } catch { res = null; }
       }
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      if (!res || !res.ok) throw new Error('All proxies failed');
       const text = await res.text();
       setStatus('Parsing ' + text.length + ' bytes...');
       const events = parseICS(text).map(e => ({ ...e, color }));
