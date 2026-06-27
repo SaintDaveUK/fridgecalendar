@@ -67,14 +67,7 @@ const Weather = (() => {
   }
 
   async function getDefaultCoord() {
-    return new Promise(resolve => {
-      if (!navigator.geolocation) return resolve(SITGES);
-      navigator.geolocation.getCurrentPosition(
-        pos => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-        ()  => resolve(SITGES),
-        { timeout: 4000 }
-      );
-    });
+    return Promise.resolve(SITGES);
   }
 
   async function init(events) {
