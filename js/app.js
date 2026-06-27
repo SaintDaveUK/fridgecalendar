@@ -325,7 +325,7 @@ function render7Day() {
     // Header
     const header = document.createElement('div');
     header.className = 'sd-header';
-    header.style.cssText = 'width:180px;flex-shrink:0;padding:8px 14px;border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;justify-content:center;';
+    header.style.cssText = 'width:260px;flex-shrink:0;padding:8px 14px;border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;justify-content:center;';
 
     const dayName = document.createElement('div');
     dayName.className = 'sd-dayname';
