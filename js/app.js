@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v9';
+  s.textContent = 'v10';
   document.body.appendChild(s);
 });
 
@@ -581,9 +581,11 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     bar.style.width  = `calc(${colSpan}  / 7 * 100% - 6px)`;
     bar.style.top    = (lane * (BAR_H + BAR_GAP) + 2) + 'px';
     bar.style.height = BAR_H + 'px';
-    bar.style.background = ev.color + '33';
-    bar.style.color      = ev.color;
-    bar.style.borderLeft = startsHere ? ('3px solid ' + ev.color) : 'none';
+    const barNs = noteStyle(ev.title || '', weekStart);
+    bar.style.backgroundColor = barNs.bg;
+    bar.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%)';
+    bar.style.color      = 'rgba(0,0,0,0.72)';
+    bar.style.borderLeft = startsHere ? '3px solid rgba(0,0,0,0.2)' : 'none';
     bar.textContent = ev.title || 'Event';
     barsSection.appendChild(bar);
   });
@@ -611,9 +613,11 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     evs.slice(0, MAX).forEach(ev => {
       const chip = document.createElement('div');
       chip.className = 'event-chip';
-      chip.style.background   = ev.color + '22';
-      chip.style.color        = ev.color;
-      chip.style.borderLeftColor = ev.color;
+      const chipNs = noteStyle(ev.title || '', d.date);
+      chip.style.backgroundColor = chipNs.bg;
+      chip.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%)';
+      chip.style.color        = 'rgba(0,0,0,0.72)';
+      chip.style.borderLeftColor = 'rgba(0,0,0,0.2)';
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
       chip.textContent = (allDay ? '' : formatTime(ev.start) + ' ') + (ev.title || 'Event');
       cell.appendChild(chip);
