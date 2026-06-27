@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v10';
+  s.textContent = 'v11';
   document.body.appendChild(s);
 });
 
@@ -318,37 +318,6 @@ function updateClockDate() {
   document.getElementById('clock-date').textContent = d + '  ' + now.getDate() + ' ' + m + ' ' + now.getFullYear();
 }
 
-function makePostit(title, ns, extrasBefore) {
-  const chip = document.createElement('div');
-  chip.style.cssText = `transform:rotate(${ns.rotation}deg);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;border-radius:3px;box-shadow:4px 7px 18px rgba(0,0,0,0.5),2px 3px 6px rgba(0,0,0,0.3);`;
-
-  // Pressed/taped top tab — set backgroundColor and backgroundImage separately so the color shows through
-  const tab = document.createElement('div');
-  tab.style.cssText = `height:18%;flex-shrink:0;border-radius:3px 3px 0 0;border-bottom:1px solid rgba(0,0,0,0.2);`;
-  tab.style.backgroundColor = ns.bg;
-  tab.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.28),rgba(0,0,0,0.28))';
-  chip.appendChild(tab);
-
-  // Body with subtle highlight gradient
-  const body = document.createElement('div');
-  body.style.cssText = `flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 6px;color:rgba(0,0,0,0.72);font-size:2.8rem;font-weight:600;word-break:break-word;border-radius:0 0 3px 3px;`;
-  body.style.backgroundColor = ns.bg;
-  body.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.22) 0%,rgba(0,0,0,0.06) 100%)';
-
-  extrasBefore.forEach(ex => {
-    const d = document.createElement('div');
-    d.style.cssText = ex.style;
-    d.style.color = 'rgba(0,0,0,0.72)';
-    d.textContent = ex.text;
-    body.appendChild(d);
-  });
-
-  const titleDiv = document.createElement('div');
-  titleDiv.textContent = title;
-  body.appendChild(titleDiv);
-  chip.appendChild(body);
-  return chip;
-}
 
 function render7Day() {
   const container = document.getElementById('seven-day');
@@ -433,8 +402,11 @@ function render7Day() {
       const end = displayEnd(ev);
       return ev.start < dayEnd && end > dayStart;
     }).sort((a, b) => a.start - b.start).forEach(ev => {
-      const chip = makePostit(ev.title || 'Event', noteStyle(ev.title || '', date), []);
+      const chip = document.createElement('div');
       chip.className = 'sd-event multiday';
+      const ms = noteStyle(ev.title || '', date);
+      chip.style.cssText = `background:${ms.bg};transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+      chip.textContent = ev.title || 'Event';
       eventsDiv.appendChild(chip);
     });
 
@@ -443,11 +415,23 @@ function render7Day() {
       .filter(e => e.start >= dayStart && e.start < dayEnd)
       .sort((a, b) => a.start - b.start)
       .forEach(ev => {
-        const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
-        const extras = [];
-        if (!allDay) extras.push({ text: formatTime(ev.start), style: 'font-weight:800;font-size:3rem;white-space:nowrap;margin-bottom:2px;' });
-        const chip = makePostit(ev.title || 'Event', noteStyle(ev.title || '', date), extras);
+        const chip = document.createElement('div');
         chip.className = 'sd-event';
+        const ns = noteStyle(ev.title || '', date);
+        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+        const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
+        if (!allDay) {
+          const timeDiv = document.createElement('div');
+          timeDiv.style.fontWeight = '800';
+          timeDiv.style.fontSize = '3rem';
+          timeDiv.style.whiteSpace = 'nowrap';
+          timeDiv.style.marginBottom = '2px';
+          timeDiv.textContent = formatTime(ev.start);
+          chip.appendChild(timeDiv);
+        }
+        const titleDiv = document.createElement('div');
+        titleDiv.textContent = ev.title || 'Event';
+        chip.appendChild(titleDiv);
         eventsDiv.appendChild(chip);
       });
 
@@ -581,11 +565,9 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     bar.style.width  = `calc(${colSpan}  / 7 * 100% - 6px)`;
     bar.style.top    = (lane * (BAR_H + BAR_GAP) + 2) + 'px';
     bar.style.height = BAR_H + 'px';
-    const barNs = noteStyle(ev.title || '', weekStart);
-    bar.style.backgroundColor = barNs.bg;
-    bar.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%)';
-    bar.style.color      = 'rgba(0,0,0,0.72)';
-    bar.style.borderLeft = startsHere ? '3px solid rgba(0,0,0,0.2)' : 'none';
+    bar.style.background = ev.color + '33';
+    bar.style.color      = ev.color;
+    bar.style.borderLeft = startsHere ? ('3px solid ' + ev.color) : 'none';
     bar.textContent = ev.title || 'Event';
     barsSection.appendChild(bar);
   });
@@ -613,11 +595,9 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     evs.slice(0, MAX).forEach(ev => {
       const chip = document.createElement('div');
       chip.className = 'event-chip';
-      const chipNs = noteStyle(ev.title || '', d.date);
-      chip.style.backgroundColor = chipNs.bg;
-      chip.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%)';
-      chip.style.color        = 'rgba(0,0,0,0.72)';
-      chip.style.borderLeftColor = 'rgba(0,0,0,0.2)';
+      chip.style.background      = ev.color + '22';
+      chip.style.color           = ev.color;
+      chip.style.borderLeftColor = ev.color;
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
       chip.textContent = (allDay ? '' : formatTime(ev.start) + ' ') + (ev.title || 'Event');
       cell.appendChild(chip);
