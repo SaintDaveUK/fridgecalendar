@@ -74,9 +74,9 @@ body {
   background: rgba(255,255,255,0.08);
   border: none;
   color: #e6edf3;
-  font-size: 2.2rem;
-  width: 52px;
-  height: 52px;
+  font-size: 3rem;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -117,11 +117,11 @@ body {
   background: transparent;
   border: none;
   color: #7d8590;
-  font-size: 0.8rem;
+  font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  padding: 5px 12px;
-  border-radius: 16px;
+  padding: 8px 20px;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -136,9 +136,9 @@ body {
 }
 
 #week-subtitle {
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 300;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #7d8590;
   text-align: center;

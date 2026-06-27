@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v8';
+  s.textContent = 'v9';
   document.body.appendChild(s);
 });
 
@@ -102,12 +102,8 @@ function startClock() {
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
-    const ss = String(now.getSeconds()).padStart(2, '0');
     document.getElementById('clock-time').textContent = hh + ':' + mm;
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    document.getElementById('clock-date').textContent =
-      days[now.getDay()] + '  ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    updateClockDate();
   }
   tick();
   setInterval(tick, 1000);
@@ -229,6 +225,7 @@ function setLang(l) {
   document.getElementById('btn-es').classList.toggle('active', l === 'es');
   document.getElementById('btn-7day').textContent  = LABELS[l].btn7day;
   document.getElementById('btn-month').textContent = LABELS[l].btnMonth;
+  updateClockDate();
   // Update day labels
   const labels = document.querySelectorAll('#day-labels div');
   LABELS[lang].days.forEach((d, i) => { labels[i].textContent = d; });
@@ -290,17 +287,35 @@ function displayEnd(ev) {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
+const WEEK_LABELS = {
+  en: { thisWeek:'This week', nextWeek:'Next week', lastWeek:'Last week', inN:'In {n} weeks', nAgo:'{n} weeks ago' },
+  es: { thisWeek:'Esta semana', nextWeek:'Próxima semana', lastWeek:'Semana pasada', inN:'En {n} semanas', nAgo:'Hace {n} semanas' }
+};
+
 function weekSubtitle(offset) {
   const weeks = offset / 7;
-  if (weeks === 0) return 'This week';
-  if (weeks === 1) return 'Next week';
-  if (weeks === 2) return 'In 2 weeks';
-  if (weeks === 3) return 'In 3 weeks';
-  if (weeks === 4) return 'In 4 weeks';
-  if (weeks === -1) return 'Last week';
-  if (weeks === -2) return '2 weeks ago';
-  if (weeks < 0)   return Math.abs(weeks) + ' weeks ago';
-  return 'In ' + weeks + ' weeks';
+  const wl = WEEK_LABELS[lang];
+  if (weeks === 0) return wl.thisWeek;
+  if (weeks === 1) return wl.nextWeek;
+  if (weeks === -1) return wl.lastWeek;
+  if (weeks > 0) return wl.inN.replace('{n}', weeks);
+  return wl.nAgo.replace('{n}', Math.abs(weeks));
+}
+
+const CLOCK_DAYS = {
+  en: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  es: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
+};
+const CLOCK_MONTHS = {
+  en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+};
+
+function updateClockDate() {
+  const now = new Date();
+  const d = CLOCK_DAYS[lang][now.getDay()];
+  const m = CLOCK_MONTHS[lang][now.getMonth()];
+  document.getElementById('clock-date').textContent = d + '  ' + now.getDate() + ' ' + m + ' ' + now.getFullYear();
 }
 
 function makePostit(title, ns, extrasBefore) {
