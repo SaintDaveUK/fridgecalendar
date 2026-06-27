@@ -1,4 +1,4 @@
-name: Refresh Calendar Data
+﻿name: Refresh Calendar Data
 
 on:
   schedule:
@@ -8,6 +8,8 @@ on:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
