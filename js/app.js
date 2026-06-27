@@ -20,12 +20,16 @@ let ICS_URLS = getStoredCalendars();
 const REFRESH_MS = 30 * 60 * 1000;
 const LABELS = {
   en: {
-    months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-    days:   ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+    months:    ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    days:      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    btn7day:   '7 Days',
+    btnMonth:  'Month'
   },
   es: {
-    months: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-    days:   ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom']
+    months:    ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    days:      ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
+    btn7day:   '7 Días',
+    btnMonth:  'Mes'
   }
 };
 
@@ -89,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v6';
+  s.textContent = 'v7';
   document.body.appendChild(s);
 });
 
@@ -143,7 +147,7 @@ function setupSwipe() {
   app.addEventListener('touchend', e => {
     if (startX === null) return;
     const dx = e.changedTouches[0].clientX - startX;
-    if (Math.abs(dx) > 60) navigate(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 60) navigateCurrent(dx < 0 ? 1 : -1);
     startX = null;
   });
 }
@@ -213,17 +217,22 @@ function setView(v) {
   }
   btnPrev.classList.remove('hidden');
   btnNext.classList.remove('hidden');
-  if (v === '7day') btnPrev.classList.add('hidden'); // starts at today, can't go back
+  if (v === '7day') {
+    btnPrev.classList.add('hidden');
+    btnNext.classList.add('hidden');
+  }
 }
 
 function setLang(l) {
   lang = l;
   document.getElementById('btn-en').classList.toggle('active', l === 'en');
   document.getElementById('btn-es').classList.toggle('active', l === 'es');
+  document.getElementById('btn-7day').textContent  = LABELS[l].btn7day;
+  document.getElementById('btn-month').textContent = LABELS[l].btnMonth;
   // Update day labels
   const labels = document.querySelectorAll('#day-labels div');
   LABELS[lang].days.forEach((d, i) => { labels[i].textContent = d; });
-  renderCalendar();
+  if (currentView === '7day') render7Day(); else renderCalendar();
 }
 
 function navigateCurrent(dir) {
@@ -294,6 +303,34 @@ function weekSubtitle(offset) {
   return 'In ' + weeks + ' weeks';
 }
 
+function makePostit(title, ns, extrasBefore) {
+  const chip = document.createElement('div');
+  chip.style.cssText = `transform:rotate(${ns.rotation}deg);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;border-radius:3px;overflow:hidden;box-shadow:4px 7px 18px rgba(0,0,0,0.5),2px 3px 6px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.35);`;
+
+  // Pressed/taped top tab
+  const tab = document.createElement('div');
+  tab.style.cssText = `height:18%;flex-shrink:0;background:linear-gradient(rgba(0,0,0,0.28),rgba(0,0,0,0.28)),${ns.bg};border-bottom:1px solid rgba(0,0,0,0.18);`;
+  chip.appendChild(tab);
+
+  // Body with gradient
+  const body = document.createElement('div');
+  body.style.cssText = `flex:1;background:linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%),${ns.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 6px;color:rgba(0,0,0,0.72);font-size:2.8rem;font-weight:600;word-break:break-word;`;
+
+  extrasBefore.forEach(ex => {
+    const d = document.createElement('div');
+    d.style.cssText = ex.style;
+    d.style.color = 'rgba(0,0,0,0.72)';
+    d.textContent = ex.text;
+    body.appendChild(d);
+  });
+
+  const titleDiv = document.createElement('div');
+  titleDiv.textContent = title;
+  body.appendChild(titleDiv);
+  chip.appendChild(body);
+  return chip;
+}
+
 function render7Day() {
   const container = document.getElementById('seven-day');
   container.innerHTML = '';
@@ -307,6 +344,17 @@ function render7Day() {
   document.getElementById('month-title').textContent =
     LABELS[lang].months[midDate.getMonth()] + ' ' + midDate.getFullYear();
   const l = LABELS[lang];
+
+  // Current-week tint on container
+  if (sevenDayOffset === 0) {
+    container.style.background = 'rgba(88,166,255,0.06)';
+    container.style.borderRadius = '10px';
+    container.style.padding = '4px';
+  } else {
+    container.style.background = '';
+    container.style.borderRadius = '';
+    container.style.padding = '';
+  }
 
   for (let i = 0; i < 7; i++) {
     const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + sevenDayOffset + i);
@@ -342,9 +390,15 @@ function render7Day() {
     const temp = Weather.getTemp(date);
     weatherDiv.textContent = temp || '';
 
+    const locWord = Weather.getLocation(date);
+    const locDiv = document.createElement('div');
+    locDiv.style.cssText = 'font-size:2rem;color:#7d8590;margin-top:2px;';
+    locDiv.textContent = locWord || '';
+
     header.appendChild(dayName);
     header.appendChild(dateNum);
     header.appendChild(weatherDiv);
+    if (locWord) header.appendChild(locDiv);
     col.appendChild(header);
 
     // Events
@@ -360,11 +414,8 @@ function render7Day() {
       const end = displayEnd(ev);
       return ev.start < dayEnd && end > dayStart;
     }).sort((a, b) => a.start - b.start).forEach(ev => {
-      const chip = document.createElement('div');
+      const chip = makePostit(ev.title || 'Event', noteStyle(ev.title || '', date), []);
       chip.className = 'sd-event multiday';
-      const msMulti = noteStyle(ev.title || '', date);
-      chip.style.cssText = `background:${msMulti.bg};transform:rotate(${msMulti.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
-      chip.textContent = ev.title || 'Event';
       eventsDiv.appendChild(chip);
     });
 
@@ -373,23 +424,11 @@ function render7Day() {
       .filter(e => e.start >= dayStart && e.start < dayEnd)
       .sort((a, b) => a.start - b.start)
       .forEach(ev => {
-        const chip = document.createElement('div');
-        chip.className = 'sd-event';
-        const ns = noteStyle(ev.title || '', date);
-        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
         const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
-        if (!allDay) {
-          const timeDiv = document.createElement('div');
-          timeDiv.style.fontWeight = '800';
-          timeDiv.style.fontSize = '3rem';
-          timeDiv.style.whiteSpace = 'nowrap';
-          timeDiv.style.marginBottom = '2px';
-          timeDiv.textContent = formatTime(ev.start);
-          chip.appendChild(timeDiv);
-        }
-        const titleDiv = document.createElement('div');
-        titleDiv.textContent = ev.title || 'Event';
-        chip.appendChild(titleDiv);
+        const extras = [];
+        if (!allDay) extras.push({ text: formatTime(ev.start), style: 'font-weight:800;font-size:3rem;white-space:nowrap;margin-bottom:2px;' });
+        const chip = makePostit(ev.title || 'Event', noteStyle(ev.title || '', date), extras);
+        chip.className = 'sd-event';
         eventsDiv.appendChild(chip);
       });
 

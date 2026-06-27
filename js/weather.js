@@ -6,6 +6,7 @@ const Weather = (() => {
   const geocodeCache = {};   // location string → { lat, lon }
   const weatherCache = {};   // "lat,lon" → { date → maxTemp }
   let tempByDate = {};       // "YYYY-MM-DD" → "24°"
+  let locationByDate = {};   // "YYYY-MM-DD" → first word of locality (non-Sitges)
 
   function weatherEmoji(code) {
     if (code === 0)               return '☀️';
@@ -111,6 +112,7 @@ const Weather = (() => {
       return fetchWeatherForCoord(lat, lon);
     }));
 
+    locationByDate = {};
     // Build tempByDate map using 16 days from today
     for (let i = 0; i < 16; i++) {
       const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
@@ -124,6 +126,11 @@ const Weather = (() => {
         const { temp, code } = temps[k];
         tempByDate[k] = weatherEmoji(code) + ' ' + temp + '°';
       }
+      // Store locality word if different from Sitges
+      if (coord && (Math.abs(coord.lat - SITGES.lat) > 0.05 || Math.abs(coord.lon - SITGES.lon) > 0.05)) {
+        const parts = (loc || '').split(/[,\s]+/).filter(Boolean);
+        if (parts.length > 0) locationByDate[k] = parts[0];
+      }
     }
   }
 
@@ -133,5 +140,10 @@ const Weather = (() => {
     return tempByDate[k] || null;
   }
 
-  return { init, getTemp };
+  function getLocation(dateOrKey) {
+    const k = typeof dateOrKey === 'string' ? dateOrKey : dateKey(dateOrKey);
+    return locationByDate[k] || null;
+  }
+
+  return { init, getTemp, getLocation };
 })();
