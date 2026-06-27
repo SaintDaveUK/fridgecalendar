@@ -363,7 +363,7 @@ function render7Day() {
       const chip = document.createElement('div');
       chip.className = 'sd-event multiday';
       const msMulti = noteStyle(ev.title || '', date);
-      chip.style.cssText = `background:${msMulti.bg};transform:rotate(${msMulti.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:0.72rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+      chip.style.cssText = `background:${msMulti.bg};transform:rotate(${msMulti.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       chip.textContent = ev.title || 'Event';
       eventsDiv.appendChild(chip);
     });
@@ -376,12 +376,12 @@ function render7Day() {
         const chip = document.createElement('div');
         chip.className = 'sd-event';
         const ns = noteStyle(ev.title || '', date);
-        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:0.72rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
         const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
         if (!allDay) {
           const timeDiv = document.createElement('div');
           timeDiv.style.fontWeight = '800';
-          timeDiv.style.fontSize = '0.85rem';
+          timeDiv.style.fontSize = '3rem';
           timeDiv.style.whiteSpace = 'nowrap';
           timeDiv.style.marginBottom = '2px';
           timeDiv.textContent = formatTime(ev.start);
