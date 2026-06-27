@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v7';
+  s.textContent = 'v8';
   document.body.appendChild(s);
 });
 
@@ -305,16 +305,20 @@ function weekSubtitle(offset) {
 
 function makePostit(title, ns, extrasBefore) {
   const chip = document.createElement('div');
-  chip.style.cssText = `transform:rotate(${ns.rotation}deg);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;border-radius:3px;overflow:hidden;box-shadow:4px 7px 18px rgba(0,0,0,0.5),2px 3px 6px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.35);`;
+  chip.style.cssText = `transform:rotate(${ns.rotation}deg);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;border-radius:3px;box-shadow:4px 7px 18px rgba(0,0,0,0.5),2px 3px 6px rgba(0,0,0,0.3);`;
 
-  // Pressed/taped top tab
+  // Pressed/taped top tab — set backgroundColor and backgroundImage separately so the color shows through
   const tab = document.createElement('div');
-  tab.style.cssText = `height:18%;flex-shrink:0;background:linear-gradient(rgba(0,0,0,0.28),rgba(0,0,0,0.28)),${ns.bg};border-bottom:1px solid rgba(0,0,0,0.18);`;
+  tab.style.cssText = `height:18%;flex-shrink:0;border-radius:3px 3px 0 0;border-bottom:1px solid rgba(0,0,0,0.2);`;
+  tab.style.backgroundColor = ns.bg;
+  tab.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.28),rgba(0,0,0,0.28))';
   chip.appendChild(tab);
 
-  // Body with gradient
+  // Body with subtle highlight gradient
   const body = document.createElement('div');
-  body.style.cssText = `flex:1;background:linear-gradient(to bottom,rgba(255,255,255,0.18) 0%,rgba(0,0,0,0.06) 100%),${ns.bg};display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 6px;color:rgba(0,0,0,0.72);font-size:2.8rem;font-weight:600;word-break:break-word;`;
+  body.style.cssText = `flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 6px;color:rgba(0,0,0,0.72);font-size:2.8rem;font-weight:600;word-break:break-word;border-radius:0 0 3px 3px;`;
+  body.style.backgroundColor = ns.bg;
+  body.style.backgroundImage = 'linear-gradient(to bottom,rgba(255,255,255,0.22) 0%,rgba(0,0,0,0.06) 100%)';
 
   extrasBefore.forEach(ex => {
     const d = document.createElement('div');
