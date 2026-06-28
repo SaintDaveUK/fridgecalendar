@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v13';
+  s.textContent = 'v14';
   document.body.appendChild(s);
 });
 
@@ -164,12 +164,18 @@ async function fetchAllCalendars() {
       for (const proxy of proxies) {
         try {
           setStatus('Fetching calendar...');
-          res = await fetch(proxy(url));
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 8000);
+          res = await fetch(proxy(url), { signal: ctrl.signal });
+          clearTimeout(timer);
           if (res && res.ok) break;
         } catch { res = null; }
       }
       if (!res || !res.ok) throw new Error('All proxies failed');
+      const ctrl2 = new AbortController();
+      const timer2 = setTimeout(() => ctrl2.abort(), 10000);
       const text = await res.text();
+      clearTimeout(timer2);
       setStatus('Parsing ' + text.length + ' bytes...');
       const events = parseICS(text).map(e => ({ ...e, color }));
       setStatus('Got ' + events.length + ' events');
