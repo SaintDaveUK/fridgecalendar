@@ -34,8 +34,8 @@ const LABELS = {
 };
 
 let lang = 'en';
-const BAR_H = 22;   // px per bar lane
-const BAR_GAP = 2;  // px between bars
+const BAR_H = 56;   // px per bar lane
+const BAR_GAP = 4;  // px between bars
 
 let viewYear, viewMonth, allEvents = [], currentView = '7day', sevenDayOffset = 0;
 
@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v14';
+  s.textContent = 'v15';
   document.body.appendChild(s);
 });
 
