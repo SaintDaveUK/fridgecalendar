@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v12';
+  s.textContent = 'v13';
   document.body.appendChild(s);
 });
 
@@ -664,9 +664,8 @@ function noteStyle(title, date) {
   return { bg, rotation };
 }
 
-function formatTime(d) {
-  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-}
+const _timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid', hour12: false });
+function formatTime(d) { return _timeFmt.format(d); }
 
 function setStatus(msg) {
   document.getElementById('status').textContent = msg;
