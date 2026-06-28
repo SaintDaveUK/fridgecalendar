@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v15';
+  s.textContent = 'v16';
   document.body.appendChild(s);
 });
 
@@ -603,17 +603,15 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       const chip = document.createElement('div');
       chip.className = 'event-chip';
       const chipNs = noteStyle(ev.title || '', d.date);
-      chip.style.background      = chipNs.bg;
-      chip.style.color           = 'rgba(0,0,0,0.72)';
-      chip.style.borderLeftColor = 'rgba(0,0,0,0.2)';
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
+      chip.style.cssText = `background:${chipNs.bg};color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
       chip.textContent = (allDay ? '' : formatTime(ev.start) + ' ') + (ev.title || 'Event');
       cell.appendChild(chip);
     });
 
     if (evs.length > MAX) {
       const more = document.createElement('div');
-      more.className = 'more-events';
+      more.style.cssText = 'font-size:2.2rem;color:#7d8590;padding:0 8px;flex-shrink:0;';
       more.textContent = '+' + (evs.length - MAX) + ' more';
       cell.appendChild(more);
     }
