@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v17';
+  s.textContent = 'v18';
   document.body.appendChild(s);
 });
 
@@ -438,7 +438,7 @@ function render7Day() {
           timeDiv.style.fontSize = '3rem';
           timeDiv.style.whiteSpace = 'nowrap';
           timeDiv.style.marginBottom = '2px';
-          timeDiv.textContent = formatTime(ev.start);
+          timeDiv.textContent = formatTimeRange(ev);
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
@@ -611,7 +611,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       const chipNs = noteStyle(ev.title || '', d.date);
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
       chip.style.cssText = `background:${chipNs.bg};color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
-      chip.textContent = (allDay ? '' : formatTime(ev.start) + ' ') + (ev.title || 'Event');
+      chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (ev.title || 'Event');
       cell.appendChild(chip);
     });
 
@@ -676,6 +676,13 @@ function noteStyle(title, date) {
 
 const _timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid', hour12: false });
 function formatTime(d) { return _timeFmt.format(d); }
+
+// "13:00" or "13:00—17:30" when the event runs longer than an hour
+function formatTimeRange(ev) {
+  const start = formatTime(ev.start);
+  if (ev.end && (ev.end - ev.start) > 60 * 60 * 1000) return start + '—' + formatTime(ev.end);
+  return start;
+}
 
 function setStatus(msg) {
   document.getElementById('status').textContent = msg;
@@ -764,7 +771,7 @@ function renderWidget() {
           timeDiv.style.fontSize   = '0.85rem';
           timeDiv.style.whiteSpace = 'nowrap';
           timeDiv.style.marginBottom = '2px';
-          timeDiv.textContent = formatTime(ev.start);
+          timeDiv.textContent = formatTimeRange(ev);
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
