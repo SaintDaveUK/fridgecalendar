@@ -113,7 +113,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v24';
+  s.textContent = 'v25';
   document.body.appendChild(s);
 });
 
@@ -214,7 +214,7 @@ function init() {
         const newV = (html.match(/app\.js\?v=(\d+)/) || [])[1];
         if (newV && newV !== myV) location.reload();
       } catch {}
-    }, 5 * 60 * 1000);
+    }, 45 * 1000);
   }
 }
 
@@ -486,9 +486,8 @@ function render7Day() {
 
     const dayName = document.createElement('div');
     dayName.className = 'sd-dayname';
-    // Mon-index: getDay() 0=Sun→6, 1=Mon→0 ... map to our labels array
-    const labelIdx = dow === 0 ? 6 : dow - 1;
-    dayName.textContent = l.days[labelIdx];
+    dayName.style.cssText = 'font-size:2.4rem;font-weight:600;letter-spacing:0.06em;color:#7d8590;margin-bottom:2px;word-break:break-word;';
+    dayName.textContent = CLOCK_DAYS[lang][dow];
 
     const dateNum = document.createElement('div');
     dateNum.className = 'sd-datenum';
