@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v19';
+  s.textContent = 'v20';
   document.body.appendChild(s);
 });
 
@@ -417,7 +417,8 @@ function render7Day() {
       const chip = document.createElement('div');
       chip.className = 'sd-event multiday';
       const ms = noteStyle(ev.title || '', date);
-      chip.style.cssText = `background:${ms.bg};transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+      chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+      applyNoteBg(chip, ms);
       chip.textContent = ev.title || 'Event';
       eventsDiv.appendChild(chip);
     });
@@ -430,7 +431,8 @@ function render7Day() {
         const chip = document.createElement('div');
         chip.className = 'sd-event';
         const ns = noteStyle(ev.title || '', date);
-        chip.style.cssText = `background:${ns.bg};transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+        chip.style.cssText = `transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+        applyNoteBg(chip, ns);
         const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
         if (!allDay) {
           const timeDiv = document.createElement('div');
@@ -578,7 +580,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     bar.style.top    = (lane * (BAR_H + BAR_GAP) + 2) + 'px';
     bar.style.height = BAR_H + 'px';
     const barNs = noteStyle(ev.title || '', weekStart);
-    bar.style.background = barNs.bg;
+    applyNoteBg(bar, barNs);
     bar.style.color      = 'rgba(0,0,0,0.72)';
     bar.style.borderLeft = startsHere ? '3px solid rgba(0,0,0,0.2)' : 'none';
     bar.textContent = ev.title || 'Event';
@@ -610,7 +612,8 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       chip.className = 'event-chip';
       const chipNs = noteStyle(ev.title || '', d.date);
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
-      chip.style.cssText = `background:${chipNs.bg};color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
+      chip.style.cssText = `color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
+      applyNoteBg(chip, chipNs);
       chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (ev.title || 'Event');
       cell.appendChild(chip);
     });
@@ -671,7 +674,37 @@ function noteStyle(title, date) {
     hsl(${hue}, ${sat}%, ${lit1}%) 0%,
     hsl(${hue2}, ${sat}%, ${lit2}%) 100%)`;
 
-  return { bg, rotation };
+  // Subtle pattern — stable across days (title only)
+  const hPattern = strHash(title + 'pat');
+  const tint = `linear-gradient(${angle}deg, hsla(${hue},${sat}%,${lit1}%,1) 0%, hsla(${hue2},${sat}%,${lit2}%,1) 100%)`;
+  let patternImage = null, patternSize = null;
+  switch (hPattern % 5) {
+    case 0: // diagonal stripes
+      patternImage = 'repeating-linear-gradient(45deg, transparent 0, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px)';
+      break;
+    case 1: // polka dots
+      patternImage = 'radial-gradient(rgba(0,0,0,0.07) 15%, transparent 16%)';
+      patternSize = '22px 22px';
+      break;
+    case 2: // ruled paper lines
+      patternImage = 'repeating-linear-gradient(0deg, transparent 0, transparent 24px, rgba(0,0,0,0.06) 24px, rgba(0,0,0,0.06) 26px)';
+      break;
+    case 3: // grid
+      patternImage = 'repeating-linear-gradient(0deg, transparent 0, transparent 26px, rgba(0,0,0,0.045) 26px, rgba(0,0,0,0.045) 28px), repeating-linear-gradient(90deg, transparent 0, transparent 26px, rgba(0,0,0,0.045) 26px, rgba(0,0,0,0.045) 28px)';
+      break;
+    // case 4: plain — no pattern
+  }
+
+  const solid = `hsl(${hue}, ${sat}%, ${lit1}%)`;
+  return { bg, rotation, solid, tint, patternImage, patternSize };
+}
+
+// Apply noteStyle background to a chip element using separate properties
+// (avoids Tizen misrendering layered background shorthand)
+function applyNoteBg(el, ns) {
+  el.style.backgroundColor = ns.solid;
+  el.style.backgroundImage = ns.patternImage ? ns.patternImage + ', ' + ns.tint : ns.tint;
+  if (ns.patternSize) el.style.backgroundSize = ns.patternSize + ', auto';
 }
 
 const _timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid', hour12: false });
