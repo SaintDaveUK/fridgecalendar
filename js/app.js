@@ -33,7 +33,7 @@ const LABELS = {
   }
 };
 
-let lang = 'en';
+let lang = Math.random() < 0.5 ? 'en' : 'es';
 const BAR_H = 56;   // px per bar lane
 const BAR_GAP = 4;  // px between bars
 
@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v20';
+  s.textContent = 'v21';
   document.body.appendChild(s);
 });
 
@@ -132,6 +132,7 @@ function init() {
     if (e.key === 'ArrowRight') navigate(1);
   });
   setupSwipe();
+  setLang(lang);
   fetchAllCalendars();
   setInterval(fetchAllCalendars, REFRESH_MS);
 
