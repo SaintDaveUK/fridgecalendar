@@ -113,7 +113,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v23';
+  s.textContent = 'v24';
   document.body.appendChild(s);
 });
 
@@ -141,7 +141,7 @@ function updateSpanishWord() {
     document.getElementById('clock-bar').appendChild(el);
   }
   const [es, en] = SPANISH_WORDS[dayOfYear(new Date()) % SPANISH_WORDS.length];
-  el.textContent = '🇪🇸 ' + es + ' — ' + en;
+  el.innerHTML = '🇪🇸 <i>' + es + '</i> (' + en + ')';
 }
 
 function startClock() {
@@ -790,23 +790,58 @@ function noteStyle(title, date) {
 
   // Subtle pattern — stable across days (title only)
   const hPattern = strHash(title + 'pat');
+  const hP2      = strHash(title + 'pat2');
+  const hP3      = strHash(title + 'pat3');
   const tint = `linear-gradient(${angle}deg, hsla(${hue},${sat}%,${lit1}%,1) 0%, hsla(${hue2},${sat}%,${lit2}%,1) 100%)`;
+
+  // Randomised pattern parameters (all stable per title)
+  const pAng   = hP2 % 180;                    // stripe/grid rotation 0–179°
+  const pThick = 2 + hP3 % 6;                  // line thickness 2–7px
+  const pGap   = 12 + hP2 % 26;                // spacing 12–37px
+  const pDot   = 3 + hP3 % 5;                  // dot radius 3–7px
+  const pCell  = 16 + hPattern % 20;           // dot/ring cell 16–35px
+  const pInk   = (0.06 + (hP3 % 4) * 0.018).toFixed(3); // opacity 0.06–0.114
+  const ink    = `rgba(0,0,0,${pInk})`;
+
   let patternImage = null, patternSize = null;
-  switch (hPattern % 5) {
-    case 0: // diagonal stripes
-      patternImage = 'repeating-linear-gradient(45deg, transparent 0, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px)';
+  switch (hPattern % 12) {
+    case 0: // diagonal stripes, random angle/thickness/gap
+      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick * 2}px)`;
       break;
-    case 1: // polka dots
-      patternImage = 'radial-gradient(rgba(0,0,0,0.07) 15%, transparent 16%)';
-      patternSize = '22px 22px';
+    case 1: // polka dots, random size/spacing
+      patternImage = `radial-gradient(circle, ${ink} ${pDot}px, transparent ${pDot + 1}px)`;
+      patternSize = `${pCell}px ${pCell}px`;
       break;
     case 2: // ruled paper lines
-      patternImage = 'repeating-linear-gradient(0deg, transparent 0, transparent 24px, rgba(0,0,0,0.06) 24px, rgba(0,0,0,0.06) 26px)';
+      patternImage = `repeating-linear-gradient(0deg, transparent 0, transparent ${pGap + 10}px, ${ink} ${pGap + 10}px, ${ink} ${pGap + 10 + pThick}px)`;
       break;
-    case 3: // grid
-      patternImage = 'repeating-linear-gradient(0deg, transparent 0, transparent 26px, rgba(0,0,0,0.045) 26px, rgba(0,0,0,0.045) 28px), repeating-linear-gradient(90deg, transparent 0, transparent 26px, rgba(0,0,0,0.045) 26px, rgba(0,0,0,0.045) 28px)';
+    case 3: // grid — thicker lines so it's actually visible
+      patternImage = `repeating-linear-gradient(0deg, transparent 0, transparent ${pGap + 8}px, ${ink} ${pGap + 8}px, ${ink} ${pGap + 8 + pThick + 2}px), repeating-linear-gradient(90deg, transparent 0, transparent ${pGap + 8}px, ${ink} ${pGap + 8}px, ${ink} ${pGap + 8 + pThick + 2}px)`;
       break;
-    // case 4: plain — no pattern
+    case 4: // diagonal grid (crosshatch) at random angle
+      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px), repeating-linear-gradient(${pAng + 90}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px)`;
+      break;
+    case 5: // vertical pinstripes
+      patternImage = `repeating-linear-gradient(90deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px)`;
+      break;
+    case 6: // rings
+      patternImage = `radial-gradient(circle, transparent ${pDot + 2}px, ${ink} ${pDot + 3}px, ${ink} ${pDot + 3 + pThick}px, transparent ${pDot + 4 + pThick}px)`;
+      patternSize = `${pCell + 8}px ${pCell + 8}px`;
+      break;
+    case 7: // double stripes — thick + thin alternating
+      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick * 3}px, transparent ${pGap + pThick * 3}px, transparent ${pGap + pThick * 3 + 6}px, ${ink} ${pGap + pThick * 3 + 6}px, ${ink} ${pGap + pThick * 3 + 6 + pThick}px)`;
+      break;
+    case 8: // confetti — two offset dot layers
+      patternImage = `radial-gradient(circle, ${ink} ${pDot}px, transparent ${pDot + 1}px), radial-gradient(circle at ${Math.floor(pCell / 2)}px ${Math.floor(pCell / 2)}px, ${ink} ${Math.max(2, pDot - 2)}px, transparent ${pDot - 1}px)`;
+      patternSize = `${pCell}px ${pCell}px, ${pCell}px ${pCell}px`;
+      break;
+    case 9: // wide soft bands
+      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap + 14}px, ${ink} ${pGap + 14}px, ${ink} ${pGap + 14 + pThick * 4}px)`;
+      break;
+    case 10: // dashed diagonal (stripes broken by cross-stripes)
+      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px), repeating-linear-gradient(${pAng + 60}deg, transparent 0, transparent ${pGap + 6}px, ${ink} ${pGap + 6}px, ${ink} ${pGap + 6 + pThick}px)`;
+      break;
+    // case 11: plain — no pattern
   }
 
   const solid = `hsl(${hue}, ${sat}%, ${lit1}%)`;
