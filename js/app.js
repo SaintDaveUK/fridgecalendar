@@ -113,25 +113,11 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v25';
+  s.textContent = 'v26';
   document.body.appendChild(s);
 });
 
-const SPANISH_WORDS = [
-  ['gato','cat'],['perro','dog'],['playa','beach'],['sol','sun'],['lluvia','rain'],
-  ['nevera','fridge'],['cocina','kitchen'],['desayuno','breakfast'],['cena','dinner'],['manzana','apple'],
-  ['leche','milk'],['pan','bread'],['queso','cheese'],['huevo','egg'],['pollo','chicken'],
-  ['pescado','fish'],['verdura','vegetable'],['fresa','strawberry'],['naranja','orange'],['uva','grape'],
-  ['cuchara','spoon'],['tenedor','fork'],['cuchillo','knife'],['vaso','glass'],['plato','plate'],
-  ['silla','chair'],['mesa','table'],['ventana','window'],['puerta','door'],['llave','key'],
-  ['coche','car'],['bicicleta','bicycle'],['tren','train'],['avión','plane'],['barco','boat'],
-  ['escuela','school'],['trabajo','work'],['médico','doctor'],['tienda','shop'],['mercado','market'],
-  ['lunes','Monday'],['mañana','morning / tomorrow'],['noche','night'],['semana','week'],['hoy','today'],
-  ['feliz','happy'],['cansado','tired'],['rápido','fast'],['despacio','slowly'],['juntos','together'],
-  ['abuela','grandmother'],['hermano','brother'],['familia','family'],['amigo','friend'],['fiesta','party'],
-  ['cumpleaños','birthday'],['regalo','gift'],['helado','ice cream'],['piscina','swimming pool'],['verano','summer']
-];
-
+// Word list lives in js/words.js (window.SPANISH_WORDS)
 function updateSpanishWord() {
   let el = document.getElementById('word-of-day');
   if (!el) {
@@ -140,7 +126,9 @@ function updateSpanishWord() {
     el.style.cssText = 'font-size:1.8rem;color:#8b949e;letter-spacing:0.05em;margin-top:2px;';
     document.getElementById('clock-bar').appendChild(el);
   }
-  const [es, en] = SPANISH_WORDS[dayOfYear(new Date()) % SPANISH_WORDS.length];
+  // Days since epoch so the whole list cycles over the years, not just the first 365
+  const daysSinceEpoch = Math.floor(Date.now() / 86400000);
+  const [es, en] = SPANISH_WORDS[daysSinceEpoch % SPANISH_WORDS.length];
   el.innerHTML = '🇪🇸 <i>' + es + '</i> (' + en + ')';
 }
 
@@ -799,7 +787,7 @@ function noteStyle(title, date) {
   const pGap   = 12 + hP2 % 26;                // spacing 12–37px
   const pDot   = 3 + hP3 % 5;                  // dot radius 3–7px
   const pCell  = 16 + hPattern % 20;           // dot/ring cell 16–35px
-  const pInk   = (0.06 + (hP3 % 4) * 0.018).toFixed(3); // opacity 0.06–0.114
+  const pInk   = (0.03 + (hP3 % 4) * 0.012).toFixed(3); // opacity 0.03–0.066
   const ink    = `rgba(0,0,0,${pInk})`;
 
   let patternImage = null, patternSize = null;
