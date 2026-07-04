@@ -30,10 +30,30 @@ const LABELS = {
     days:      ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
     btn7day:   '7 Días',
     btnMonth:  'Mes'
+  },
+  sv: {
+    months:    ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
+    days:      ['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],
+    btn7day:   '7 dagar',
+    btnMonth:  'Månad'
+  },
+  cy: {
+    months:    ['Ionawr','Chwefror','Mawrth','Ebrill','Mai','Mehefin','Gorffennaf','Awst','Medi','Hydref','Tachwedd','Rhagfyr'],
+    days:      ['Llun','Maw','Mer','Iau','Gwe','Sad','Sul'],
+    btn7day:   '7 Diwrnod',
+    btnMonth:  'Mis'
+  },
+  ca: {
+    months:    ['Gener','Febrer','Març','Abril','Maig','Juny','Juliol','Agost','Setembre','Octubre','Novembre','Desembre'],
+    days:      ['Dll','Dm','Dc','Dj','Dv','Ds','Dg'],
+    btn7day:   '7 dies',
+    btnMonth:  'Mes'
   }
 };
+const LANG_LOCALES = { en: 'en-GB', es: 'es-ES', sv: 'sv-SE', cy: 'cy-GB', ca: 'ca-ES' };
+const LANG_LIST = Object.keys(LABELS);
 
-let lang = Math.random() < 0.5 ? 'en' : 'es';
+let lang = LANG_LIST[Math.floor(Math.random() * LANG_LIST.length)];
 const BAR_H = 56;   // px per bar lane
 const BAR_GAP = 4;  // px between bars
 
@@ -93,7 +113,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v22';
+  s.textContent = 'v23';
   document.body.appendChild(s);
 });
 
@@ -158,8 +178,10 @@ function init() {
 
   document.getElementById('btn-prev').addEventListener('click', () => navigateCurrent(-1));
   document.getElementById('btn-next').addEventListener('click', () => navigateCurrent(1));
-  document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
-  document.getElementById('btn-es').addEventListener('click', () => setLang('es'));
+  LANG_LIST.forEach(code => {
+    const btn = document.getElementById('btn-' + code);
+    if (btn) btn.addEventListener('click', () => setLang(code));
+  });
   document.getElementById('btn-7day').addEventListener('click', () => setView('7day'));
   document.getElementById('btn-month').addEventListener('click', () => setView('month'));
   document.addEventListener('keydown', e => {
@@ -176,6 +198,24 @@ function init() {
     const now = new Date();
     if (now.getHours() === 4 && now.getMinutes() < 2) location.reload();
   }, 60 * 1000);
+
+  // Auto-update: poll index.html every 5 min; reload when a new ?v= is deployed
+  const currentV = (document.querySelector('script[src*="app.js"]') || {}).src || '';
+  const myV = (currentV.match(/\?v=(\d+)/) || [])[1];
+  if (myV) {
+    setInterval(async () => {
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 8000);
+        const res = await fetch('index.html?ts=' + Date.now(), { cache: 'no-store', signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!res.ok) return;
+        const html = await res.text();
+        const newV = (html.match(/app\.js\?v=(\d+)/) || [])[1];
+        if (newV && newV !== myV) location.reload();
+      } catch {}
+    }, 5 * 60 * 1000);
+  }
 }
 
 function setupSwipe() {
@@ -291,8 +331,10 @@ function setView(v) {
 
 function setLang(l) {
   lang = l;
-  document.getElementById('btn-en').classList.toggle('active', l === 'en');
-  document.getElementById('btn-es').classList.toggle('active', l === 'es');
+  LANG_LIST.forEach(code => {
+    const btn = document.getElementById('btn-' + code);
+    if (btn) btn.classList.toggle('active', l === code);
+  });
   document.getElementById('btn-7day').textContent  = LABELS[l].btn7day;
   document.getElementById('btn-month').textContent = LABELS[l].btnMonth;
   updateClockDate();
@@ -359,7 +401,10 @@ function displayEnd(ev) {
 
 const WEEK_LABELS = {
   en: { thisWeek:'This week', nextWeek:'Next week', lastWeek:'Last week', inN:'In {n} weeks', nAgo:'{n} weeks ago' },
-  es: { thisWeek:'Esta semana', nextWeek:'Próxima semana', lastWeek:'Semana pasada', inN:'En {n} semanas', nAgo:'Hace {n} semanas' }
+  es: { thisWeek:'Esta semana', nextWeek:'Próxima semana', lastWeek:'Semana pasada', inN:'En {n} semanas', nAgo:'Hace {n} semanas' },
+  sv: { thisWeek:'Denna vecka', nextWeek:'Nästa vecka', lastWeek:'Förra veckan', inN:'Om {n} veckor', nAgo:'{n} veckor sedan' },
+  cy: { thisWeek:'Yr wythnos hon', nextWeek:'Wythnos nesaf', lastWeek:'Wythnos diwethaf', inN:'Ymhen {n} wythnos', nAgo:'{n} wythnos yn ôl' },
+  ca: { thisWeek:'Aquesta setmana', nextWeek:'La setmana vinent', lastWeek:'La setmana passada', inN:"D'aquí a {n} setmanes", nAgo:'Fa {n} setmanes' }
 };
 
 function weekSubtitle(offset) {
@@ -374,11 +419,17 @@ function weekSubtitle(offset) {
 
 const CLOCK_DAYS = {
   en: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-  es: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
+  es: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+  sv: ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'],
+  cy: ['Dydd Sul','Dydd Llun','Dydd Mawrth','Dydd Mercher','Dydd Iau','Dydd Gwener','Dydd Sadwrn'],
+  ca: ['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte']
 };
 const CLOCK_MONTHS = {
   en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-  es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+  es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+  sv: ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'],
+  cy: ['Ionawr','Chwefror','Mawrth','Ebrill','Mai','Mehefin','Gorffennaf','Awst','Medi','Hydref','Tachwedd','Rhagfyr'],
+  ca: ['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre']
 };
 
 function updateClockDate() {
@@ -784,7 +835,7 @@ function showEventDetail(ev) {
   const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
   const when = document.createElement('div');
   when.style.cssText = 'font-size:3rem;font-weight:600;';
-  const dateFmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Madrid' });
+  const dateFmt = new Intl.DateTimeFormat(LANG_LOCALES[lang] || 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Madrid' });
   when.textContent = dateFmt.format(ev.start) + (allDay ? '' : ' · ' + formatTimeRange(ev));
   card.appendChild(when);
 
