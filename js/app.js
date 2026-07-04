@@ -93,19 +93,54 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v21';
+  s.textContent = 'v22';
   document.body.appendChild(s);
 });
 
+const SPANISH_WORDS = [
+  ['gato','cat'],['perro','dog'],['playa','beach'],['sol','sun'],['lluvia','rain'],
+  ['nevera','fridge'],['cocina','kitchen'],['desayuno','breakfast'],['cena','dinner'],['manzana','apple'],
+  ['leche','milk'],['pan','bread'],['queso','cheese'],['huevo','egg'],['pollo','chicken'],
+  ['pescado','fish'],['verdura','vegetable'],['fresa','strawberry'],['naranja','orange'],['uva','grape'],
+  ['cuchara','spoon'],['tenedor','fork'],['cuchillo','knife'],['vaso','glass'],['plato','plate'],
+  ['silla','chair'],['mesa','table'],['ventana','window'],['puerta','door'],['llave','key'],
+  ['coche','car'],['bicicleta','bicycle'],['tren','train'],['avión','plane'],['barco','boat'],
+  ['escuela','school'],['trabajo','work'],['médico','doctor'],['tienda','shop'],['mercado','market'],
+  ['lunes','Monday'],['mañana','morning / tomorrow'],['noche','night'],['semana','week'],['hoy','today'],
+  ['feliz','happy'],['cansado','tired'],['rápido','fast'],['despacio','slowly'],['juntos','together'],
+  ['abuela','grandmother'],['hermano','brother'],['familia','family'],['amigo','friend'],['fiesta','party'],
+  ['cumpleaños','birthday'],['regalo','gift'],['helado','ice cream'],['piscina','swimming pool'],['verano','summer']
+];
+
+function updateSpanishWord() {
+  let el = document.getElementById('word-of-day');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'word-of-day';
+    el.style.cssText = 'font-size:1.8rem;color:#8b949e;letter-spacing:0.05em;margin-top:2px;';
+    document.getElementById('clock-bar').appendChild(el);
+  }
+  const [es, en] = SPANISH_WORDS[dayOfYear(new Date()) % SPANISH_WORDS.length];
+  el.textContent = '🇪🇸 ' + es + ' — ' + en;
+}
+
 function startClock() {
+  let lastDay = new Date().getDate();
   function tick() {
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
     document.getElementById('clock-time').textContent = hh + ':' + mm;
     updateClockDate();
+    // Midnight rollover: re-render so "today" moves without waiting for the next fetch
+    if (now.getDate() !== lastDay) {
+      lastDay = now.getDate();
+      updateSpanishWord();
+      if (currentView === '7day') render7Day(); else renderCalendar();
+    }
   }
   tick();
+  updateSpanishWord();
   setInterval(tick, 1000);
 }
 
@@ -155,9 +190,25 @@ function setupSwipe() {
   });
 }
 
+let lastFetchOk = null;
+
+function setOfflineBanner(offline) {
+  let b = document.getElementById('offline-banner');
+  if (!offline) { if (b) b.remove(); return; }
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'offline-banner';
+    b.style.cssText = 'position:fixed;top:8px;left:8px;z-index:999;background:rgba(248,81,73,0.9);color:#fff;font-size:1.6rem;font-weight:600;padding:8px 18px;border-radius:8px;';
+    document.body.appendChild(b);
+  }
+  b.textContent = '⚠ Offline — showing old events' +
+    (lastFetchOk ? ' (last update ' + _timeFmt.format(new Date(lastFetchOk)) + ')' : '');
+}
+
 async function fetchAllCalendars() {
   setStatus('Updating...');
-  allEvents = [];
+  const newEvents = [];
+  let anySuccess = false;
   await Promise.all(ICS_URLS.map(async ({ url, color }) => {
     try {
       const proxies = [
@@ -186,11 +237,17 @@ async function fetchAllCalendars() {
       setStatus('Parsing ' + text.length + ' bytes...');
       const events = parseICS(text).map(e => ({ ...e, color }));
       setStatus('Got ' + events.length + ' events');
-      allEvents.push(...events);
+      newEvents.push(...events);
+      anySuccess = true;
     } catch (err) {
       setStatus('ERROR: ' + err.message);
     }
   }));
+  if (anySuccess) {
+    allEvents = newEvents;
+    lastFetchOk = Date.now();
+  }
+  setOfflineBanner(!anySuccess);
   await Weather.init(allEvents);
   if (currentView === '7day') {
     render7Day();
@@ -421,6 +478,7 @@ function render7Day() {
       chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       applyNoteBg(chip, ms);
       chip.textContent = ev.title || 'Event';
+      chip.addEventListener('click', () => showEventDetail(ev));
       eventsDiv.appendChild(chip);
     });
 
@@ -447,6 +505,7 @@ function render7Day() {
         const titleDiv = document.createElement('div');
         titleDiv.textContent = ev.title || 'Event';
         chip.appendChild(titleDiv);
+        chip.addEventListener('click', () => showEventDetail(ev));
         eventsDiv.appendChild(chip);
       });
 
@@ -585,6 +644,8 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     bar.style.color      = 'rgba(0,0,0,0.72)';
     bar.style.borderLeft = startsHere ? '3px solid rgba(0,0,0,0.2)' : 'none';
     bar.textContent = ev.title || 'Event';
+    bar.addEventListener('click', () => showEventDetail(ev));
+    bar.style.cursor = 'pointer';
     barsSection.appendChild(bar);
   });
   row.appendChild(barsSection);
@@ -616,6 +677,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       chip.style.cssText = `color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
       applyNoteBg(chip, chipNs);
       chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (ev.title || 'Event');
+      chip.addEventListener('click', () => showEventDetail(ev));
       cell.appendChild(chip);
     });
 
@@ -698,6 +760,52 @@ function noteStyle(title, date) {
 
   const solid = `hsl(${hue}, ${sat}%, ${lit1}%)`;
   return { bg, rotation, solid, tint, patternImage, patternSize };
+}
+
+// Tap-for-detail overlay: big card with full title, time, location, description
+function showEventDetail(ev) {
+  const old = document.getElementById('event-detail');
+  if (old) old.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'event-detail';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:60px;';
+
+  const ns = noteStyle(ev.title || '', dayOnly(ev.start));
+  const card = document.createElement('div');
+  card.style.cssText = 'max-width:75%;max-height:80%;overflow:hidden;padding:50px 60px;border-radius:6px;color:rgba(0,0,0,0.8);box-shadow:6px 10px 30px rgba(0,0,0,0.6);transform:rotate(' + ns.rotation + 'deg);display:flex;flex-direction:column;gap:18px;';
+  applyNoteBg(card, ns);
+
+  const title = document.createElement('div');
+  title.style.cssText = 'font-size:4.5rem;font-weight:700;word-break:break-word;';
+  title.textContent = ev.title || 'Event';
+  card.appendChild(title);
+
+  const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
+  const when = document.createElement('div');
+  when.style.cssText = 'font-size:3rem;font-weight:600;';
+  const dateFmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Madrid' });
+  when.textContent = dateFmt.format(ev.start) + (allDay ? '' : ' · ' + formatTimeRange(ev));
+  card.appendChild(when);
+
+  if (ev.location) {
+    const loc = document.createElement('div');
+    loc.style.cssText = 'font-size:2.6rem;';
+    loc.textContent = '📍 ' + ev.location;
+    card.appendChild(loc);
+  }
+
+  if (ev.description) {
+    const desc = document.createElement('div');
+    desc.style.cssText = 'font-size:2.4rem;white-space:pre-wrap;word-break:break-word;overflow:hidden;';
+    desc.textContent = ev.description;
+    card.appendChild(desc);
+  }
+
+  overlay.appendChild(card);
+  overlay.addEventListener('click', () => overlay.remove());
+  document.body.appendChild(overlay);
+  setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 10000);
 }
 
 // Apply noteStyle background to a chip element using separate properties
@@ -811,6 +919,7 @@ function renderWidget() {
         const titleDiv = document.createElement('div');
         titleDiv.textContent = ev.title || 'Event';
         chip.appendChild(titleDiv);
+        chip.addEventListener('click', () => showEventDetail(ev));
         eventsDiv.appendChild(chip);
       });
 

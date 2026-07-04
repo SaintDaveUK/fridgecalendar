@@ -52,8 +52,10 @@ window.parseICS = function(text) {
     const key = line.slice(0, colon).split(';')[0].toUpperCase();
     const val = line.slice(colon + 1);
 
-    if (key === 'SUMMARY')         current.title    = val;
-    if (key === 'LOCATION')        current.location = val;
+    const unescape = s => s.replace(/\\n/gi, '\n').replace(/\\,/g, ',').replace(/\\;/g, ';').replace(/\\\\/g, '\\');
+    if (key === 'SUMMARY')         current.title       = unescape(val);
+    if (key === 'LOCATION')        current.location    = unescape(val);
+    if (key === 'DESCRIPTION')     current.description = unescape(val);
     if (key === 'DTSTART')         current.start = parseDate(line.slice(colon + 1));
     if (key === 'DTEND')           current.end   = parseDate(line.slice(colon + 1));
     if (key === 'COLOR')           current.color = val;
