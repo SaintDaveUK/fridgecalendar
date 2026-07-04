@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v29';
+  s.textContent = 'v30';
   document.body.appendChild(s);
 });
 
@@ -143,7 +143,7 @@ function initAnalogClock() {
 
   const face = document.createElement('div');
   face.id = 'analog-clock';
-  face.style.cssText = `position:absolute;left:calc(50% + 280px);top:50%;transform:translateY(-50%);width:${size}px;height:${size}px;border:3px solid rgba(255,255,255,0.25);border-radius:50%;`;
+  face.style.cssText = `position:absolute;right:40px;top:50%;transform:translateY(-50%);width:${size}px;height:${size}px;border:3px solid rgba(255,255,255,0.25);border-radius:50%;`;
 
   for (let i = 0; i < 12; i++) {
     const major = i % 3 === 0;
@@ -237,10 +237,10 @@ function init() {
   fetchAllCalendars();
   setInterval(fetchAllCalendars, REFRESH_MS);
 
-  // Re-render every 5 min so finished/ongoing event styling stays current
+  // Re-render every minute so finished/ongoing event styling stays current
   setInterval(() => {
     if (currentView === '7day') render7Day(); else renderCalendar();
-  }, 5 * 60 * 1000);
+  }, 60 * 1000);
 
   // Nightly full page reload at ~04:00 to clear browser memory (fridge freezes otherwise)
   setInterval(() => {
