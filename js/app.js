@@ -113,7 +113,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v27';
+  s.textContent = 'v28';
   document.body.appendChild(s);
 });
 
@@ -252,7 +252,8 @@ function init() {
         if (!res.ok) return;
         const html = await res.text();
         const newV = (html.match(/app\.js\?v=(\d+)/) || [])[1];
-        if (newV && newV !== myV) location.reload();
+        // Navigate to a cache-busted URL — plain reload() can serve stale cached HTML on Tizen
+        if (newV && newV !== myV) location.replace(location.pathname + '?r=' + Date.now());
       } catch {}
     }, 45 * 1000);
   }
@@ -842,8 +843,8 @@ function noteStyle(title, date) {
   const pInk   = (0.03 + (hP3 % 4) * 0.012).toFixed(3); // opacity 0.03–0.066
   const ink    = `rgba(0,0,0,${pInk})`;
 
-  let patternImage = null, patternSize = null;
-  switch (hPattern % 12) {
+  let patternImage = null, patternSize = null, patternPos = null;
+  switch (hPattern % 17) {
     case 0: // diagonal stripes, random angle/thickness/gap
       patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick * 2}px)`;
       break;
@@ -880,11 +881,43 @@ function noteStyle(title, date) {
     case 10: // dashed diagonal (stripes broken by cross-stripes)
       patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px), repeating-linear-gradient(${pAng + 60}deg, transparent 0, transparent ${pGap + 6}px, ${ink} ${pGap + 6}px, ${ink} ${pGap + 6 + pThick}px)`;
       break;
-    // case 11: plain — no pattern
+    case 11: { // stars (inline SVG tile)
+      const cell = pCell * 2;
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${cell}' height='${cell}'><polygon points='10,0 12.9,6.9 20,7.6 14.7,12.5 16.2,19.5 10,15.8 3.8,19.5 5.3,12.5 0,7.6 7.1,6.9' transform='scale(${(pCell / 20).toFixed(2)})' fill='rgba(0,0,0,${pInk})'/></svg>`;
+      patternImage = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+      patternSize = `${cell}px ${cell}px`;
+      break;
+    }
+    case 12: { // checkerboard
+      const c2 = pGap * 2;
+      patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%), linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
+      patternSize = `${c2}px ${c2}px, ${c2}px ${c2}px`;
+      patternPos = `0 0, ${pGap}px ${pGap}px`;
+      break;
+    }
+    case 13: { // tartan — crossed thick + thin bands at two opacities
+      const ink2 = `rgba(0,0,0,${(parseFloat(pInk) * 0.55).toFixed(3)})`;
+      patternImage = `repeating-linear-gradient(0deg, transparent 0, transparent ${pGap + 10}px, ${ink} ${pGap + 10}px, ${ink} ${pGap + 10 + pThick * 3}px), repeating-linear-gradient(90deg, transparent 0, transparent ${pGap + 10}px, ${ink} ${pGap + 10}px, ${ink} ${pGap + 10 + pThick * 3}px), repeating-linear-gradient(0deg, transparent 0, transparent ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2) + pThick}px), repeating-linear-gradient(90deg, transparent 0, transparent ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2) + pThick}px)`;
+      break;
+    }
+    case 14: { // zigzag
+      const z = pGap + 8;
+      patternImage = `linear-gradient(135deg, ${ink} 25%, transparent 25%), linear-gradient(225deg, ${ink} 25%, transparent 25%), linear-gradient(45deg, ${ink} 25%, transparent 25%), linear-gradient(315deg, ${ink} 25%, transparent 25%)`;
+      patternSize = `${z}px ${z}px, ${z}px ${z}px, ${z}px ${z}px, ${z}px ${z}px`;
+      patternPos = `${Math.floor(z / 2)}px 0, ${Math.floor(z / 2)}px 0, 0 0, 0 0`;
+      break;
+    }
+    case 15: { // diamonds
+      const d = pGap + 4;
+      patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
+      patternSize = `${d}px ${d}px`;
+      break;
+    }
+    // case 16: plain — no pattern
   }
 
   const solid = `hsl(${hue}, ${sat}%, ${lit1}%)`;
-  return { bg, rotation, solid, tint, patternImage, patternSize };
+  return { bg, rotation, solid, tint, patternImage, patternSize, patternPos };
 }
 
 // Tap-for-detail overlay: big card with full title, time, location, description
@@ -939,6 +972,7 @@ function applyNoteBg(el, ns) {
   el.style.backgroundColor = ns.solid;
   el.style.backgroundImage = ns.patternImage ? ns.patternImage + ', ' + ns.tint : ns.tint;
   if (ns.patternSize) el.style.backgroundSize = ns.patternSize + ', auto';
+  if (ns.patternPos)  el.style.backgroundPosition = ns.patternPos + ', 0 0';
 }
 
 const _timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid', hour12: false });
