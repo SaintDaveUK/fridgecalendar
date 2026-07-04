@@ -111,9 +111,13 @@ function renderCalList() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  var kf = document.createElement('style');
+  kf.textContent = '@keyframes gentlePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }';
+  document.head.appendChild(kf);
+
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v28';
+  s.textContent = 'v29';
   document.body.appendChild(s);
 });
 
@@ -232,6 +236,11 @@ function init() {
   setLang(lang);
   fetchAllCalendars();
   setInterval(fetchAllCalendars, REFRESH_MS);
+
+  // Re-render every 5 min so finished/ongoing event styling stays current
+  setInterval(() => {
+    if (currentView === '7day') render7Day(); else renderCalendar();
+  }, 5 * 60 * 1000);
 
   // Nightly full page reload at ~04:00 to clear browser memory (fridge freezes otherwise)
   setInterval(() => {
@@ -597,6 +606,7 @@ function render7Day() {
         titleDiv.textContent = ev.title || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
+        applyTimeState(chip, ev);
         eventsDiv.appendChild(chip);
       });
 
@@ -769,6 +779,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       applyNoteBg(chip, chipNs);
       chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (ev.title || 'Event');
       chip.addEventListener('click', () => showEventDetail(ev));
+      applyTimeState(chip, ev);
       cell.appendChild(chip);
     });
 
@@ -966,6 +977,23 @@ function showEventDetail(ev) {
   setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 10000);
 }
 
+// 'past' = timed event already finished today, 'now' = happening right now, null = all-day or future
+function eventTimeState(ev) {
+  const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
+  if (allDay) return null;
+  const now = new Date();
+  const end = ev.end || new Date(ev.start.getTime() + 60 * 60 * 1000);
+  if (end <= now) return 'past';
+  if (ev.start <= now && now < end) return 'now';
+  return null;
+}
+
+function applyTimeState(el, ev) {
+  const state = eventTimeState(ev);
+  if (state === 'past') el.style.opacity = '0.5';
+  if (state === 'now')  el.style.animation = 'gentlePulse 2.5s ease-in-out infinite';
+}
+
 // Apply noteStyle background to a chip element using separate properties
 // (avoids Tizen misrendering layered background shorthand)
 function applyNoteBg(el, ns) {
@@ -1079,6 +1107,7 @@ function renderWidget() {
         titleDiv.textContent = ev.title || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
+        applyTimeState(chip, ev);
         eventsDiv.appendChild(chip);
       });
 
