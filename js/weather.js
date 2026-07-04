@@ -22,6 +22,13 @@ const Weather = (() => {
     return '';
   }
 
+  function fetchWithTimeout(url, opts, ms) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms || 8000);
+    return fetch(url, Object.assign({}, opts, { signal: ctrl.signal }))
+      .finally(() => clearTimeout(timer));
+  }
+
   function dateKey(d) {
     return d.getFullYear() + '-' +
       String(d.getMonth() + 1).padStart(2, '0') + '-' +
@@ -35,7 +42,7 @@ const Weather = (() => {
     try {
       const url = 'https://nominatim.openstreetmap.org/search?q=' +
         encodeURIComponent(locationStr) + '&format=json&limit=1';
-      const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
+      const res = await fetchWithTimeout(url, { headers: { 'Accept-Language': 'en' } }, 8000);
       const data = await res.json();
       if (data && data[0]) {
         const coord = { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
@@ -52,7 +59,7 @@ const Weather = (() => {
     try {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
         `&daily=temperature_2m_max,weathercode&timezone=auto&forecast_days=16`;
-      const res  = await fetch(url);
+      const res  = await fetchWithTimeout(url, {}, 8000);
       const data = await res.json();
       const result = {};
       (data.daily.time || []).forEach((d, i) => {

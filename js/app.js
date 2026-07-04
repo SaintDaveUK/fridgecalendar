@@ -93,7 +93,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v16';
+  s.textContent = 'v17';
   document.body.appendChild(s);
 });
 
@@ -134,6 +134,12 @@ function init() {
   setupSwipe();
   fetchAllCalendars();
   setInterval(fetchAllCalendars, REFRESH_MS);
+
+  // Nightly full page reload at ~04:00 to clear browser memory (fridge freezes otherwise)
+  setInterval(() => {
+    const now = new Date();
+    if (now.getHours() === 4 && now.getMinutes() < 2) location.reload();
+  }, 60 * 1000);
 }
 
 function setupSwipe() {
