@@ -113,7 +113,7 @@ function renderCalList() {
 document.addEventListener('DOMContentLoaded', function() {
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v26';
+  s.textContent = 'v27';
   document.body.appendChild(s);
 });
 
@@ -130,6 +130,57 @@ function updateSpanishWord() {
   const daysSinceEpoch = Math.floor(Date.now() / 86400000);
   const [es, en] = SPANISH_WORDS[daysSinceEpoch % SPANISH_WORDS.length];
   el.innerHTML = '🇪🇸 <i>' + es + '</i> (' + en + ')';
+}
+
+function initAnalogClock() {
+  const bar = document.getElementById('clock-bar');
+  bar.style.position = 'relative';
+  const size = 120;
+
+  const face = document.createElement('div');
+  face.id = 'analog-clock';
+  face.style.cssText = `position:absolute;left:calc(50% + 280px);top:50%;transform:translateY(-50%);width:${size}px;height:${size}px;border:3px solid rgba(255,255,255,0.25);border-radius:50%;`;
+
+  for (let i = 0; i < 12; i++) {
+    const major = i % 3 === 0;
+    const tick = document.createElement('div');
+    tick.style.cssText = `position:absolute;left:50%;top:50%;width:${major ? 3 : 2}px;height:${major ? 10 : 6}px;background:rgba(255,255,255,${major ? 0.5 : 0.28});transform:translate(-50%,-50%) rotate(${i * 30}deg) translateY(-${size / 2 - 9}px);`;
+    face.appendChild(tick);
+  }
+
+  function makeHand(width, length, color) {
+    const hand = document.createElement('div');
+    hand.style.cssText = `position:absolute;left:50%;bottom:50%;width:${width}px;height:${length}px;background:${color};transform-origin:50% 100%;border-radius:${width}px;margin-left:${-width / 2}px;`;
+    face.appendChild(hand);
+    return hand;
+  }
+  const hourHand = makeHand(5, size * 0.26, '#e6edf3');
+  const minHand  = makeHand(3.5, size * 0.38, '#e6edf3');
+  const secHand  = makeHand(1.5, size * 0.43, '#f85149');
+
+  const hub = document.createElement('div');
+  hub.style.cssText = 'position:absolute;left:50%;top:50%;width:9px;height:9px;background:#f85149;border-radius:50%;transform:translate(-50%,-50%);';
+  face.appendChild(hub);
+  bar.appendChild(face);
+
+  let lastDraw = 0;
+  function draw() {
+    lastDraw = Date.now();
+    const now = new Date();
+    const s = now.getSeconds() + now.getMilliseconds() / 1000;
+    const m = now.getMinutes() + s / 60;
+    const h = (now.getHours() % 12) + m / 60;
+    secHand.style.transform  = `rotate(${s * 6}deg)`;
+    minHand.style.transform  = `rotate(${m * 6}deg)`;
+    hourHand.style.transform = `rotate(${h * 30}deg)`;
+  }
+  function frame() {
+    draw();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  // Fallback: if rAF is throttled/paused, keep the hands moving (choppier but alive)
+  setInterval(() => { if (Date.now() - lastDraw > 500) draw(); }, 250);
 }
 
 function startClock() {
@@ -149,6 +200,7 @@ function startClock() {
   }
   tick();
   updateSpanishWord();
+  initAnalogClock();
   setInterval(tick, 1000);
 }
 
