@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v34';
+  s.textContent = 'v35';
   document.body.appendChild(s);
 });
 
@@ -431,11 +431,12 @@ function addDays(d, n) {
 function isMultiDay(ev) {
   if (!ev.end) return false;
   const s = dayOnly(ev.start);
-  const e = dayOnly(ev.end);
   const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0 &&
                  ev.end.getHours()   === 0 && ev.end.getMinutes()   === 0;
   // iCal all-day DTEND is exclusive: single all-day = end is startDay+1
-  if (allDay) return (e - s) > 86400000;
+  if (allDay) return (dayOnly(ev.end) - s) > 86400000;
+  // Timed: end is exclusive too — 22:00–00:00 belongs entirely to the start day
+  const e = dayOnly(new Date(ev.end.getTime() - 1));
   return e > s;
 }
 
@@ -444,7 +445,8 @@ function displayEnd(ev) {
   if (!ev.end) return addDays(ev.start, 1);
   const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0 &&
                  ev.end.getHours()   === 0 && ev.end.getMinutes()   === 0;
-  return allDay ? dayOnly(ev.end) : addDays(ev.end, 1);
+  // Timed events: end instant is exclusive, so 00:00 doesn't spill into the next day
+  return allDay ? dayOnly(ev.end) : addDays(dayOnly(new Date(ev.end.getTime() - 1)), 1);
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
@@ -886,9 +888,13 @@ function noteStyle(title, date) {
       patternImage = `radial-gradient(circle, ${ink} ${pDot}px, transparent ${pDot + 1}px), radial-gradient(circle at ${Math.floor(pCell / 2)}px ${Math.floor(pCell / 2)}px, ${ink} ${Math.max(2, pDot - 2)}px, transparent ${pDot - 1}px)`;
       patternSize = `${pCell}px ${pCell}px, ${pCell}px ${pCell}px`;
       break;
-    case 9: // wide soft bands
-      patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap + 14}px, ${ink} ${pGap + 14}px, ${ink} ${pGap + 14 + pThick * 4}px)`;
+    case 9: { // hexagon grid (SVG tile)
+      const hexScale = 1.6 + (pGap % 20) / 10; // 1.6–3.5×
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'><path d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z' fill='rgba(0,0,0,${pInk})'/></svg>`;
+      patternImage = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+      patternSize = `${Math.round(28 * hexScale)}px ${Math.round(49 * hexScale)}px`;
       break;
+    }
     case 10: // dashed diagonal (stripes broken by cross-stripes)
       patternImage = `repeating-linear-gradient(${pAng}deg, transparent 0, transparent ${pGap}px, ${ink} ${pGap}px, ${ink} ${pGap + pThick}px), repeating-linear-gradient(${pAng + 60}deg, transparent 0, transparent ${pGap + 6}px, ${ink} ${pGap + 6}px, ${ink} ${pGap + 6 + pThick}px)`;
       break;
@@ -907,9 +913,11 @@ function noteStyle(title, date) {
       patternPos = `0 0, ${cSq}px ${cSq}px`;
       break;
     }
-    case 13: { // tartan — crossed thick + thin bands at two opacities
-      const ink2 = `rgba(0,0,0,${(parseFloat(pInk) * 0.55).toFixed(3)})`;
-      patternImage = `repeating-linear-gradient(0deg, transparent 0, transparent ${pGap + 10}px, ${ink} ${pGap + 10}px, ${ink} ${pGap + 10 + pThick * 3}px), repeating-linear-gradient(90deg, transparent 0, transparent ${pGap + 10}px, ${ink} ${pGap + 10}px, ${ink} ${pGap + 10 + pThick * 3}px), repeating-linear-gradient(0deg, transparent 0, transparent ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2) + pThick}px), repeating-linear-gradient(90deg, transparent 0, transparent ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2)}px, ${ink2} ${Math.floor((pGap + 10) / 2) + pThick}px)`;
+    case 13: { // big polka dots
+      const bigDot = 8 + pDot;         // 11–15px radius
+      const bigCell = 40 + (pGap % 24); // 40–63px cell
+      patternImage = `radial-gradient(circle, ${ink} ${bigDot}px, transparent ${bigDot + 1}px)`;
+      patternSize = `${bigCell}px ${bigCell}px`;
       break;
     }
     case 14: { // zigzag
@@ -991,7 +999,7 @@ const CODE_ISO2 = {
   HUN:'HU', INA:'ID', IDN:'ID', IND:'IN', IRI:'IR', IRN:'IR', IRL:'IE', IRE:'IE', IRQ:'IQ', ISL:'IS', ISR:'IL', ITA:'IT',
   JAM:'JM', JOR:'JO', JPN:'JP', KAZ:'KZ', KEN:'KE', KGZ:'KG', KOR:'KR', KSA:'SA', SAU:'SA', KUW:'KW', KWT:'KW', LAO:'LA',
   LAT:'LV', LVA:'LV', LBN:'LB', LIB:'LB', LBR:'LR', LBA:'LY', LBY:'LY', LIE:'LI', LTU:'LT', LUX:'LU', MAD:'MG', MDG:'MG',
-  MAR:'MA', MAS:'MY', MYS:'MY', MDA:'MD', MEX:'MX', MGL:'MN', MNG:'MN', MKD:'MK', MLI:'ML', MLT:'MT', MNE:'ME', MOZ:'MZ',
+  MAR:'MA', MOR:'MA', MAS:'MY', MYS:'MY', MDA:'MD', MEX:'MX', MGL:'MN', MNG:'MN', MKD:'MK', MLI:'ML', MLT:'MT', MNE:'ME', MOZ:'MZ',
   MRI:'MU', MUS:'MU', MTN:'MR', MYA:'MM', NAM:'NA', NCA:'NI', NIC:'NI', NED:'NL', NLD:'NL', NEP:'NP', NPL:'NP', NGA:'NG',
   NGR:'NG', NIG:'NE', NER:'NE', NOR:'NO', NZL:'NZ', OMA:'OM', OMN:'OM', PAK:'PK', PAN:'PA', PAR:'PY', PRY:'PY', PER:'PE',
   PHI:'PH', PHL:'PH', PLE:'PS', PNG:'PG', POL:'PL', POR:'PT', PRT:'PT', PRK:'KP', PUR:'PR', PRI:'PR', QAT:'QA', ROU:'RO',
