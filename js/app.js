@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v38';
+  s.textContent = 'v39';
   document.body.appendChild(s);
 });
 
@@ -1061,7 +1061,8 @@ function applyNoteBg(el, ns) {
 }
 
 const _timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid', hour12: false });
-function formatTime(d) { return _timeFmt.format(d); }
+// "11:00" → "11", "14:30" stays "14:30"
+function formatTime(d) { return _timeFmt.format(d).replace(/:00$/, ''); }
 
 // "13:00" or "13:00—17:30" when the event runs longer than an hour
 function formatTimeRange(ev) {
