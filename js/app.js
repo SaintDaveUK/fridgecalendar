@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v32';
+  s.textContent = 'v33';
   document.body.appendChild(s);
 });
 
@@ -978,23 +978,45 @@ function showEventDetail(ev) {
   setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 10000);
 }
 
-// Country codes → flag emoji. Standalone uppercase code in a title gets its flag prepended.
-const COUNTRY_FLAGS = {
-  ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', NIR: '🇬🇧', GBR: '🇬🇧', IRL: '🇮🇪', IRE: '🇮🇪',
-  ESP: '🇪🇸', SPA: '🇪🇸', MEX: '🇲🇽', FRA: '🇫🇷', GER: '🇩🇪', DEU: '🇩🇪', ITA: '🇮🇹', POR: '🇵🇹',
-  NED: '🇳🇱', HOL: '🇳🇱', BEL: '🇧🇪', SWE: '🇸🇪', NOR: '🇳🇴', DEN: '🇩🇰', FIN: '🇫🇮', ISL: '🇮🇸',
-  SUI: '🇨🇭', AUT: '🇦🇹', POL: '🇵🇱', CZE: '🇨🇿', CRO: '🇭🇷', SRB: '🇷🇸', GRE: '🇬🇷', TUR: '🇹🇷',
-  UKR: '🇺🇦', USA: '🇺🇸', CAN: '🇨🇦', BRA: '🇧🇷', ARG: '🇦🇷', CHI: '🇨🇱', COL: '🇨🇴', PER: '🇵🇪',
-  URU: '🇺🇾', JPN: '🇯🇵', KOR: '🇰🇷', CHN: '🇨🇳', IND: '🇮🇳', AUS: '🇦🇺', NZL: '🇳🇿', RSA: '🇿🇦',
-  MAR: '🇲🇦', EGY: '🇪🇬', NGA: '🇳🇬', GHA: '🇬🇭', SEN: '🇸🇳', CMR: '🇨🇲', TUN: '🇹🇳', ALG: '🇩🇿',
-  KSA: '🇸🇦', SAU: '🇸🇦', QAT: '🇶🇦', UAE: '🇦🇪'
+// 3-letter codes (IOC/FIFA/ISO3 + common aliases) → ISO2, converted to flag emoji.
+// UK home nations use literal subdivision flags below.
+const CODE_ISO2 = {
+  AFG:'AF', ALB:'AL', ALG:'DZ', DZA:'DZ', AND:'AD', ANG:'AO', AGO:'AO', ARG:'AR', ARM:'AM', AUS:'AU', AUT:'AT', AZE:'AZ',
+  BAH:'BS', BAN:'BD', BGD:'BD', BAR:'BB', BEL:'BE', BEN:'BJ', BER:'BM', BHU:'BT', BIH:'BA', BLR:'BY', BOL:'BO', BOT:'BW',
+  BRA:'BR', BRN:'BH', BUL:'BG', BGR:'BG', BUR:'BF', CAM:'KH', KHM:'KH', CAN:'CA', CGO:'CG', CHA:'TD', CHI:'CL', CHL:'CL',
+  CHN:'CN', CIV:'CI', CMR:'CM', COD:'CD', COL:'CO', CRC:'CR', CRI:'CR', CRO:'HR', HRV:'HR', CUB:'CU', CYP:'CY', CZE:'CZ',
+  DEN:'DK', DNK:'DK', DJI:'DJ', DOM:'DO', ECU:'EC', EGY:'EG', ERI:'ER', ESA:'SV', SLV:'SV', ESP:'ES', SPA:'ES', EST:'EE',
+  ETH:'ET', EUR:'EU', FIJ:'FJ', FJI:'FJ', FIN:'FI', FRA:'FR', GAB:'GA', GAM:'GM', GBR:'GB', GEO:'GE', GER:'DE', DEU:'DE',
+  GHA:'GH', GRE:'GR', GRC:'GR', GUA:'GT', GTM:'GT', GUI:'GN', GUY:'GY', HAI:'HT', HTI:'HT', HON:'HN', HND:'HN', HOL:'NL',
+  HUN:'HU', INA:'ID', IDN:'ID', IND:'IN', IRI:'IR', IRN:'IR', IRL:'IE', IRE:'IE', IRQ:'IQ', ISL:'IS', ISR:'IL', ITA:'IT',
+  JAM:'JM', JOR:'JO', JPN:'JP', KAZ:'KZ', KEN:'KE', KGZ:'KG', KOR:'KR', KSA:'SA', SAU:'SA', KUW:'KW', KWT:'KW', LAO:'LA',
+  LAT:'LV', LVA:'LV', LBN:'LB', LIB:'LB', LBR:'LR', LBA:'LY', LBY:'LY', LIE:'LI', LTU:'LT', LUX:'LU', MAD:'MG', MDG:'MG',
+  MAR:'MA', MAS:'MY', MYS:'MY', MDA:'MD', MEX:'MX', MGL:'MN', MNG:'MN', MKD:'MK', MLI:'ML', MLT:'MT', MNE:'ME', MOZ:'MZ',
+  MRI:'MU', MUS:'MU', MTN:'MR', MYA:'MM', NAM:'NA', NCA:'NI', NIC:'NI', NED:'NL', NLD:'NL', NEP:'NP', NPL:'NP', NGA:'NG',
+  NGR:'NG', NIG:'NE', NER:'NE', NOR:'NO', NZL:'NZ', OMA:'OM', OMN:'OM', PAK:'PK', PAN:'PA', PAR:'PY', PRY:'PY', PER:'PE',
+  PHI:'PH', PHL:'PH', PLE:'PS', PNG:'PG', POL:'PL', POR:'PT', PRT:'PT', PRK:'KP', PUR:'PR', PRI:'PR', QAT:'QA', ROU:'RO',
+  ROM:'RO', RSA:'ZA', ZAF:'ZA', RUS:'RU', RWA:'RW', SEN:'SN', SIN:'SG', SGP:'SG', SLO:'SI', SVN:'SI', SMR:'SM', SOM:'SO',
+  SRB:'RS', SRI:'LK', LKA:'LK', SUD:'SD', SDN:'SD', SUI:'CH', CHE:'CH', SVK:'SK', SWE:'SE', SYR:'SY', TAN:'TZ', TZA:'TZ',
+  THA:'TH', TJK:'TJ', TKM:'TM', TOG:'TG', TGO:'TG', TPE:'TW', TWN:'TW', TTO:'TT', TUN:'TN', TUR:'TR', UAE:'AE', ARE:'AE',
+  UGA:'UG', UKR:'UA', URU:'UY', URY:'UY', USA:'US', UZB:'UZ', VEN:'VE', VIE:'VN', VNM:'VN', YEM:'YE', ZAM:'ZM', ZMB:'ZM',
+  ZIM:'ZW', ZWE:'ZW'
 };
+const SPECIAL_FLAGS = { ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', NIR: '🇬🇧' };
 
+function codeFlag(code) {
+  if (SPECIAL_FLAGS[code]) return SPECIAL_FLAGS[code];
+  const iso2 = CODE_ISO2[code];
+  if (!iso2) return null;
+  return String.fromCodePoint(0x1F1E6 + iso2.charCodeAt(0) - 65, 0x1F1E6 + iso2.charCodeAt(1) - 65);
+}
+
+// Every standalone uppercase code in the title gets its flag: "WAL v ENG" → "🏴… WAL v 🏴… ENG"
 function flagTitle(title) {
   if (!title) return title;
-  const m = title.match(/(?:^|[^A-Za-z])([A-Z]{3})(?![A-Za-z])/);
-  if (m && COUNTRY_FLAGS[m[1]]) return COUNTRY_FLAGS[m[1]] + ' ' + title;
-  return title;
+  return title.replace(/(^|[^A-Za-z])([A-Z]{3})(?![A-Za-z])/g, (m, pre, code) => {
+    const flag = codeFlag(code);
+    return flag ? pre + flag + ' ' + code : m;
+  });
 }
 
 // 'past' = timed event already finished today, 'now' = happening right now, null = all-day or future
