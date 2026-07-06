@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v33';
+  s.textContent = 'v34';
   document.body.appendChild(s);
 });
 
@@ -900,7 +900,7 @@ function noteStyle(title, date) {
       break;
     }
     case 12: { // checkerboard — enforce a min square size so it reads as a pattern
-      const cSq = Math.max(26, pGap);
+      const cSq = 48 + (pGap % 24); // 48–71px squares
       const c2 = cSq * 2;
       patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%), linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
       patternSize = `${c2}px ${c2}px, ${c2}px ${c2}px`;
@@ -920,7 +920,7 @@ function noteStyle(title, date) {
       break;
     }
     case 15: { // diamonds
-      const d = Math.max(30, pGap + 4);
+      const d = 44 + (pGap % 20); // 44–63px tiles
       patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
       patternSize = `${d}px ${d}px`;
       break;
