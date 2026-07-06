@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v31';
+  s.textContent = 'v32';
   document.body.appendChild(s);
 });
 
@@ -577,7 +577,7 @@ function render7Day() {
       const ms = noteStyle(ev.title || '', date);
       chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       applyNoteBg(chip, ms);
-      chip.textContent = ev.title || 'Event';
+      chip.textContent = flagTitle(ev.title) || 'Event';
       chip.addEventListener('click', () => showEventDetail(ev));
       eventsDiv.appendChild(chip);
     });
@@ -603,7 +603,7 @@ function render7Day() {
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
-        titleDiv.textContent = ev.title || 'Event';
+        titleDiv.textContent = flagTitle(ev.title) || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
         applyTimeState(chip, ev);
@@ -744,7 +744,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
     applyNoteBg(bar, barNs);
     bar.style.color      = 'rgba(0,0,0,0.72)';
     bar.style.borderLeft = startsHere ? '3px solid rgba(0,0,0,0.2)' : 'none';
-    bar.textContent = ev.title || 'Event';
+    bar.textContent = flagTitle(ev.title) || 'Event';
     bar.addEventListener('click', () => showEventDetail(ev));
     bar.style.cursor = 'pointer';
     barsSection.appendChild(bar);
@@ -777,7 +777,7 @@ function buildWeekRow(week, multiDayEvs, singleDayEvs) {
       const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
       chip.style.cssText = `color:rgba(0,0,0,0.72);border-left:5px solid rgba(0,0,0,0.2);font-size:2.4rem;line-height:1.3;padding:4px 10px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;flex-shrink:0;`;
       applyNoteBg(chip, chipNs);
-      chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (ev.title || 'Event');
+      chip.textContent = (allDay ? '' : formatTimeRange(ev) + ' ') + (flagTitle(ev.title) || 'Event');
       chip.addEventListener('click', () => showEventDetail(ev));
       applyTimeState(chip, ev);
       cell.appendChild(chip);
@@ -948,7 +948,7 @@ function showEventDetail(ev) {
 
   const title = document.createElement('div');
   title.style.cssText = 'font-size:4.5rem;font-weight:700;word-break:break-word;';
-  title.textContent = ev.title || 'Event';
+  title.textContent = flagTitle(ev.title) || 'Event';
   card.appendChild(title);
 
   const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
@@ -976,6 +976,25 @@ function showEventDetail(ev) {
   overlay.addEventListener('click', () => overlay.remove());
   document.body.appendChild(overlay);
   setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 10000);
+}
+
+// Country codes → flag emoji. Standalone uppercase code in a title gets its flag prepended.
+const COUNTRY_FLAGS = {
+  ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', NIR: '🇬🇧', GBR: '🇬🇧', IRL: '🇮🇪', IRE: '🇮🇪',
+  ESP: '🇪🇸', SPA: '🇪🇸', MEX: '🇲🇽', FRA: '🇫🇷', GER: '🇩🇪', DEU: '🇩🇪', ITA: '🇮🇹', POR: '🇵🇹',
+  NED: '🇳🇱', HOL: '🇳🇱', BEL: '🇧🇪', SWE: '🇸🇪', NOR: '🇳🇴', DEN: '🇩🇰', FIN: '🇫🇮', ISL: '🇮🇸',
+  SUI: '🇨🇭', AUT: '🇦🇹', POL: '🇵🇱', CZE: '🇨🇿', CRO: '🇭🇷', SRB: '🇷🇸', GRE: '🇬🇷', TUR: '🇹🇷',
+  UKR: '🇺🇦', USA: '🇺🇸', CAN: '🇨🇦', BRA: '🇧🇷', ARG: '🇦🇷', CHI: '🇨🇱', COL: '🇨🇴', PER: '🇵🇪',
+  URU: '🇺🇾', JPN: '🇯🇵', KOR: '🇰🇷', CHN: '🇨🇳', IND: '🇮🇳', AUS: '🇦🇺', NZL: '🇳🇿', RSA: '🇿🇦',
+  MAR: '🇲🇦', EGY: '🇪🇬', NGA: '🇳🇬', GHA: '🇬🇭', SEN: '🇸🇳', CMR: '🇨🇲', TUN: '🇹🇳', ALG: '🇩🇿',
+  KSA: '🇸🇦', SAU: '🇸🇦', QAT: '🇶🇦', UAE: '🇦🇪'
+};
+
+function flagTitle(title) {
+  if (!title) return title;
+  const m = title.match(/(?:^|[^A-Za-z])([A-Z]{3})(?![A-Za-z])/);
+  if (m && COUNTRY_FLAGS[m[1]]) return COUNTRY_FLAGS[m[1]] + ' ' + title;
+  return title;
 }
 
 // 'past' = timed event already finished today, 'now' = happening right now, null = all-day or future
@@ -1105,7 +1124,7 @@ function renderWidget() {
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
-        titleDiv.textContent = ev.title || 'Event';
+        titleDiv.textContent = flagTitle(ev.title) || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
         applyTimeState(chip, ev);
