@@ -17,7 +17,7 @@ function saveCalendars(list) {
 
 let ICS_URLS = getStoredCalendars();
 
-const REFRESH_MS = 30 * 60 * 1000;
+const REFRESH_MS = 10 * 60 * 1000;
 const LABELS = {
   en: {
     months:    ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v30';
+  s.textContent = 'v31';
   document.body.appendChild(s);
 });
 
@@ -302,7 +302,7 @@ async function fetchAllCalendars() {
   await Promise.all(ICS_URLS.map(async ({ url, color }) => {
     try {
       const proxies = [
-        () => 'calendar.ics',
+        () => 'calendar.ics?ts=' + Date.now(),  // cache-bust: fridge caches plain fetches
         u => u,
         u => 'https://corsproxy.io/?' + encodeURIComponent(u),
         u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
@@ -899,11 +899,12 @@ function noteStyle(title, date) {
       patternSize = `${cell}px ${cell}px`;
       break;
     }
-    case 12: { // checkerboard
-      const c2 = pGap * 2;
+    case 12: { // checkerboard — enforce a min square size so it reads as a pattern
+      const cSq = Math.max(26, pGap);
+      const c2 = cSq * 2;
       patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%), linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
       patternSize = `${c2}px ${c2}px, ${c2}px ${c2}px`;
-      patternPos = `0 0, ${pGap}px ${pGap}px`;
+      patternPos = `0 0, ${cSq}px ${cSq}px`;
       break;
     }
     case 13: { // tartan — crossed thick + thin bands at two opacities
@@ -919,7 +920,7 @@ function noteStyle(title, date) {
       break;
     }
     case 15: { // diamonds
-      const d = pGap + 4;
+      const d = Math.max(30, pGap + 4);
       patternImage = `linear-gradient(45deg, ${ink} 25%, transparent 25%, transparent 75%, ${ink} 75%)`;
       patternSize = `${d}px ${d}px`;
       break;
