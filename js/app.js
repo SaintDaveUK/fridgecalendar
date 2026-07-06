@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v36';
+  s.textContent = 'v37';
   document.body.appendChild(s);
 });
 
@@ -435,9 +435,8 @@ function isMultiDay(ev) {
                  ev.end.getHours()   === 0 && ev.end.getMinutes()   === 0;
   // iCal all-day DTEND is exclusive: single all-day = end is startDay+1
   if (allDay) return (dayOnly(ev.end) - s) > 86400000;
-  // Timed: end is exclusive too — 22:00–00:00 belongs entirely to the start day
-  const e = dayOnly(new Date(ev.end.getTime() - 1));
-  return e > s;
+  // Timed: under 24h is a single event on its start day, even crossing midnight (23:00–01:00)
+  return (ev.end - ev.start) > 86400000;
 }
 
 // Exclusive end date for display (for all-day events, iCal DTEND is already exclusive)
