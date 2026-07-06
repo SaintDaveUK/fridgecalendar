@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var s = document.createElement('div');
   s.style.cssText = 'position:fixed;top:0;right:0;background:red;color:white;font-size:20px;padding:4px 10px;z-index:9999;';
-  s.textContent = 'v37';
+  s.textContent = 'v38';
   document.body.appendChild(s);
 });
 
@@ -578,7 +578,8 @@ function render7Day() {
       const ms = noteStyle(ev.title || '', date);
       chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       applyNoteBg(chip, ms);
-      chip.textContent = flagTitle(ev.title) || 'Event';
+      chip.style.whiteSpace = 'pre-line';
+      chip.textContent = stackVs(flagTitle(ev.title)) || 'Event';
       chip.addEventListener('click', () => showEventDetail(ev));
       eventsDiv.appendChild(chip);
     });
@@ -604,7 +605,8 @@ function render7Day() {
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
-        titleDiv.textContent = flagTitle(ev.title) || 'Event';
+        titleDiv.style.whiteSpace = 'pre-line';
+        titleDiv.textContent = stackVs(flagTitle(ev.title)) || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
         applyTimeState(chip, ev);
@@ -1008,7 +1010,7 @@ const CODE_ISO2 = {
   UGA:'UG', UKR:'UA', URU:'UY', URY:'UY', USA:'US', UZB:'UZ', VEN:'VE', VIE:'VN', VNM:'VN', YEM:'YE', ZAM:'ZM', ZMB:'ZM',
   ZIM:'ZW', ZWE:'ZW'
 };
-const SPECIAL_FLAGS = { ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', NIR: '🇬🇧' };
+const SPECIAL_FLAGS = { ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', WLS: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', NIR: '🇬🇧' };
 
 function codeFlag(code) {
   if (SPECIAL_FLAGS[code]) return SPECIAL_FLAGS[code];
@@ -1024,6 +1026,12 @@ function flagTitle(title) {
     const flag = codeFlag(code);
     return flag ? pre + flag + ' ' + code : m;
   });
+}
+
+// "ENG v WLS" → "ENG\nv\nWLS" so each side gets its own line on the post-it
+function stackVs(title) {
+  if (!title) return title;
+  return title.replace(/\s+(vs?)\s+/gi, '\n$1\n');
 }
 
 // 'past' = timed event already finished today, 'now' = happening right now, null = all-day or future
@@ -1153,7 +1161,8 @@ function renderWidget() {
           chip.appendChild(timeDiv);
         }
         const titleDiv = document.createElement('div');
-        titleDiv.textContent = flagTitle(ev.title) || 'Event';
+        titleDiv.style.whiteSpace = 'pre-line';
+        titleDiv.textContent = stackVs(flagTitle(ev.title)) || 'Event';
         chip.appendChild(titleDiv);
         chip.addEventListener('click', () => showEventDetail(ev));
         applyTimeState(chip, ev);
