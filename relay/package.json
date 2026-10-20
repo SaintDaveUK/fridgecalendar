@@ -1,0 +1,6 @@
+{
+  "name": "fridge-anylist-relay",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": { "anylist": "^0.8.5" }
+}

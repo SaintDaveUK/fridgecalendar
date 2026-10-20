@@ -234,6 +234,7 @@ function init() {
   });
   setupSwipe();
   setLang(lang);
+  Todos.start();
   fetchAllCalendars();
   setInterval(fetchAllCalendars, REFRESH_MS);
 
