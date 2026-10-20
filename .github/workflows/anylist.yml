@@ -1,4 +1,3 @@
-# NOTE: scheduled workflows only run from the default branch (main). Copy this file there.
 name: Sync AnyList todos
 on:
   schedule: [{ cron: '*/15 * * * *' }]
@@ -22,8 +21,8 @@ jobs:
           NODE_PATH: relay/node_modules
       - name: Commit if changed
         run: |
-          # ignore the timestamp-only change
-          if git diff --quiet -I'"updated"' todos.json 2>/dev/null && git ls-files --error-unmatch todos.json >/dev/null 2>&1; then exit 0; fi
-          git config user.name "anylist-sync"; git config user.email "anylist-sync@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add todos.json
-          git commit -m "Sync AnyList todos" && git push
+          git diff --staged --quiet || git commit -m "Sync AnyList todos"
+          git push origin HEAD:gh-pages

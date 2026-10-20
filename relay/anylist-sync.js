@@ -22,7 +22,7 @@ const AnyList = require('anylist');
     });
   });
 
-  fs.writeFileSync(out, JSON.stringify({ updated: new Date().toISOString(), items }, null, 2) + '\n');
+  fs.writeFileSync(out, JSON.stringify({ items }, null, 2) + '\n');
   console.log('Wrote ' + items.length + ' items from ' + new Set(items.map(i => i.list)).size + ' lists to ' + out);
   any.teardown();
 })().catch(err => { console.error(err.message); process.exit(1); });
