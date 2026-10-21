@@ -607,16 +607,39 @@ body.widget-mode #widget { display: flex; }
 
 .todo-note {
   flex: none;
-  padding: 4px 8px;
+  padding: 6px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.15;
   color: #1b1f24;
   border-radius: 3px;
   box-shadow: 2px 3px 6px rgba(0,0,0,0.45);
   overflow: hidden;
-  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.todo-new { animation: todo-flash 1.2s ease-in-out infinite; }
+@keyframes todo-flash {
+  0%, 100% { filter: brightness(1); box-shadow: 2px 3px 6px rgba(0,0,0,0.45); }
+  50%      { filter: brightness(1.35); box-shadow: 0 0 14px 4px rgba(255,255,255,0.85); }
+}
+
+#todo-eye {
+  position: fixed;
+  right: 6px;
+  bottom: 6px;
+  z-index: 50;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
 }
