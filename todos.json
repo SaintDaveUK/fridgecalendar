@@ -1,14 +1,6 @@
 {
   "items": [
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Mirin",
-      "list": "Grocery List"
-    },
-    {
       "name": "Buy winter shoes Leo",
       "list": "To Do"
     },
@@ -71,6 +63,14 @@
     {
       "name": "More Tuppers identical size",
       "list": "Things To Buy"
+    },
+    {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Mirin",
+      "list": "Grocery List"
     }
   ]
 }
