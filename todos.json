@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "name": "Mirin",
+      "list": "Grocery List"
+    },
+    {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "More Tuppers identical size",
+      "list": "Things To Buy"
+    },
+    {
       "name": "Buy winter shoes Leo",
       "list": "To Do"
     },
@@ -29,10 +45,6 @@
       "list": "To Do"
     },
     {
-      "name": "See if we can add this list to the fridge",
-      "list": "To Do"
-    },
-    {
       "name": "Translate Leo's birth certificate",
       "list": "To Do"
     },
@@ -57,20 +69,12 @@
       "list": "To Do"
     },
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
+      "name": "Fix pinchos stay over Christmas",
+      "list": "To Do"
     },
     {
-      "name": "More Tuppers identical size",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Mirin",
-      "list": "Grocery List"
+      "name": "Buy mattress cover",
+      "list": "To Do"
     }
   ]
 }
