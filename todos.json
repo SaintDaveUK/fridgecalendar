@@ -1,14 +1,6 @@
 {
   "items": [
     {
-      "name": "Mirin",
-      "list": "Grocery List"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -17,8 +9,12 @@
       "list": "Things To Buy"
     },
     {
-      "name": "Buy winter shoes Leo",
-      "list": "To Do"
+      "name": "Mirin",
+      "list": "Grocery List"
+    },
+    {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -65,11 +61,11 @@
       "list": "To Do"
     },
     {
-      "name": "Buy Batteries",
+      "name": "Fix pinchos stay over Christmas",
       "list": "To Do"
     },
     {
-      "name": "Fix pinchos stay over Christmas",
+      "name": "Fix blinder living room",
       "list": "To Do"
     },
     {
