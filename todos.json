@@ -1,12 +1,8 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "More Tuppers identical size",
-      "list": "Things To Buy"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
       "name": "Mirin",
@@ -69,8 +65,12 @@
       "list": "To Do"
     },
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "More Tuppers identical size",
+      "list": "Things To Buy"
     }
   ]
 }
