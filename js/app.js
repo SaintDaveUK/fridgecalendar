@@ -249,6 +249,9 @@ function init() {
     if (now.getHours() === 4 && now.getMinutes() < 2) location.reload();
   }, 60 * 1000);
 
+  // Force a full, cache-busted reload every 2 hours so new deploys are always picked up
+  setTimeout(() => location.replace(location.pathname + '?r=' + Date.now()), 2 * 60 * 60 * 1000);
+
   // Auto-update: poll index.html every 5 min; reload when a new ?v= is deployed
   const currentV = (document.querySelector('script[src*="app.js"]') || {}).src || '';
   const myV = (currentV.match(/\?v=(\d+)/) || [])[1];
