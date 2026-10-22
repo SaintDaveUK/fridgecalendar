@@ -5,6 +5,10 @@
       "list": "Things To Buy"
     },
     {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -70,10 +74,6 @@
       "name": "Dave return jacket",
       "list": "To Do",
       "added": "2026-10-22T17:38:46.520Z"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
     }
   ]
 }
