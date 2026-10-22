@@ -528,7 +528,7 @@ function render7Day() {
       (isWeekend ? ' weekend'   : '') +
       (isToday   ? ' today-col' : '');
     col.style.cssText = 'display:flex;flex-direction:row;flex:1;min-height:0;border-radius:10px;overflow:hidden;' +
-      (isWeekend ? 'background:rgba(255,200,100,0.05);' : 'background:rgba(255,255,255,0.03);') +
+      (isWeekend ? 'background:rgba(255,170,60,0.16);' : 'background:rgba(255,255,255,0.03);') +
       (isToday   ? 'background:rgba(88,166,255,0.08);outline:1.5px solid rgba(88,166,255,0.3);' : '');
 
     // Header
