@@ -1,8 +1,12 @@
-// Bottom row of todo post-its: every unchecked AnyList item, in a stable order, coloured by its list.
+// Bottom row of todo post-its: every unchecked AnyList item, in a stable order, coloured and decorated by a hash of its text.
 // Fed by todos.json (written by relay/anylist-sync.js).
 window.Todos = (function () {
   const CACHE_KEY = 'todos_cache';
   const GAP = 8;
+  // Endpoint that resolves an item in AnyList (see relay/worker.js). Empty = tapping a note does nothing.
+  const RESOLVE_URL = '';
+  const RESOLVED_KEY = 'todos_resolved';
+  const RESOLVED_MS = 15 * 60 * 1000;   // hide a resolved item until the next syncs catch up
   let items = [];   // [{ name, list, added? }]
 
   function load() {
@@ -17,7 +21,7 @@ window.Todos = (function () {
       clearTimeout(timer);
       if (!res.ok) throw new Error(res.status);
       const data = await res.json();
-      items = (data.items || []).filter(i => i && i.name);
+      items = (data.items || []).filter(i => i && i.name && !isResolved(i));
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(items)); } catch (e) {}
     } catch (e) { /* keep cached/previous items */ }
     render();
@@ -32,9 +36,22 @@ window.Todos = (function () {
 
   const keyOf = i => i.list + '\u0001' + i.name;
   function hash(str) {
-    let h = 0;
-    for (let k = 0; k < str.length; k++) h = (h * 31 + str.charCodeAt(k)) | 0;
-    return Math.abs(h);
+    let h = 2166136261;
+    for (let k = 0; k < str.length; k++) { h ^= str.charCodeAt(k); h = Math.imul(h, 16777619); }
+    h ^= h >>> 15; h = Math.imul(h, 2246822507); h ^= h >>> 13;
+    return h >>> 0;
+  }
+  function readResolved() {
+    try { return JSON.parse(localStorage.getItem(RESOLVED_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function isResolved(i) {
+    const t = readResolved()[keyOf(i)];
+    return !!t && Date.now() - t < RESOLVED_MS;
+  }
+  function markResolved(i) {
+    const r = readResolved();
+    r[keyOf(i)] = Date.now();
+    try { localStorage.setItem(RESOLVED_KEY, JSON.stringify(r)); } catch (e) {}
   }
   function isNew(i) { return i.added && Date.now() - Date.parse(i.added) < NEW_MS; }
 
@@ -46,15 +63,52 @@ window.Todos = (function () {
       (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
   }
 
-  // Largest font (px) at which the text still fits inside the square note
-  function fitFont(el, side) {
-    let lo = 10, hi = Math.floor(side * 0.5);
+  // One font size for every note on the page: the largest at which all texts fit (whole words, no mid-word breaks)
+  function fitAll(notes, side) {
+    const fits = () => notes.every(el => el.scrollHeight <= el.clientHeight && el.scrollWidth <= el.clientWidth);
+    let lo = 10, hi = Math.floor(side * 0.3);
     while (lo < hi) {
       const mid = Math.ceil((lo + hi) / 2);
-      el.style.fontSize = mid + 'px';
-      if (el.scrollHeight <= el.clientHeight && el.scrollWidth <= el.clientWidth) lo = mid; else hi = mid - 1;
+      notes.forEach(el => { el.style.fontSize = mid + 'px'; });
+      if (fits()) lo = mid; else hi = mid - 1;
     }
-    el.style.fontSize = lo + 'px';
+    notes.forEach(el => { el.style.fontSize = lo + 'px'; });
+  }
+
+  const STICKERS = ['\u2B50', '\u2764\uFE0F', '\uD83C\uDF40', '\uD83C\uDF1F', '\uD83C\uDF3C', '\uD83D\uDD25', '\uD83C\uDF08', '\uD83D\uDC1E', '\uD83C\uDF4E', '\u26A1', '\uD83C\uDF19', '\uD83C\uDF88'];
+  const DECOS = ['pin', 'tape', 'fold', 'stripe', 'dots'];
+
+  // Confirm dialog, then ask the relay to tick the item off in AnyList
+  function askResolve(it) {
+    if (!RESOLVE_URL || document.getElementById('todo-dialog')) return;
+    const ov = document.createElement('div');
+    ov.id = 'todo-dialog';
+    const box = document.createElement('div');
+    box.className = 'todo-dialog-box';
+    const q = document.createElement('div');
+    q.className = 'todo-dialog-q';
+    q.textContent = 'Do you want to resolve \u201C' + it.name + '\u201D?';
+    const yes = document.createElement('button');
+    yes.textContent = 'Yes';
+    const no = document.createElement('button');
+    no.textContent = 'No';
+    const close = () => ov.remove();
+    no.addEventListener('click', close);
+    ov.addEventListener('click', e => { if (e.target === ov) close(); });
+    yes.addEventListener('click', function () {
+      markResolved(it);
+      items = items.filter(i => keyOf(i) !== keyOf(it));
+      render();
+      close();
+      fetch(RESOLVE_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ list: it.list, name: it.name }) })
+        .catch(function () {});
+    });
+    const btns = document.createElement('div');
+    btns.className = 'todo-dialog-btns';
+    btns.appendChild(yes); btns.appendChild(no);
+    box.appendChild(q); box.appendChild(btns);
+    ov.appendChild(box);
+    document.body.appendChild(ov);
   }
 
   function isHidden() { try { return localStorage.getItem(HIDE_KEY) === '1'; } catch (e) { return false; } }
@@ -86,11 +140,6 @@ window.Todos = (function () {
     applyHidden();
     if (!items.length || isHidden()) return;
 
-    // One distinct hue per list, evenly spaced (stable: lists sorted by name)
-    const lists = Array.from(new Set(items.map(i => i.list))).sort();
-    const hueOf = {};
-    lists.forEach((l, idx) => { hueOf[l] = Math.round((idx * 360 / lists.length + 40) % 360); });
-
     // Square notes: fewest rows that hold everything (biggest notes), else MAX_ROWS rows paged
     const W = row.clientWidth - 16, H = row.clientHeight;
     let rows = 1, side = 0, perRow = 1;
@@ -108,20 +157,24 @@ window.Todos = (function () {
     if (advance) pos += perPage;
     if (pos >= deck.length) pos = 0;
 
+    const notes = [];
     deck.slice(pos, pos + perPage).forEach(it => {
-      const hue = hueOf[it.list];
-      const h = hash(keyOf(it));
+      const h = hash(it.name);
+      const hue = h % 360;
       const el = document.createElement('div');
-      el.className = 'todo-note' + (isNew(it) ? ' todo-new' : '');
+      el.className = 'todo-note deco-' + DECOS[(h >>> 9) % DECOS.length] + (isNew(it) ? ' todo-new' : '');
       el.textContent = it.name;
       el.title = it.list;
+      el.dataset.sticker = STICKERS[(h >>> 13) % STICKERS.length];
       el.style.width = side + 'px';
       el.style.height = side + 'px';
-      el.style.background = 'linear-gradient(' + (150 + h % 60) + 'deg, hsl(' + hue + ',70%,78%), hsl(' + hue + ',68%,66%))';
-      el.style.transform = 'rotate(' + ((h % 70) / 10 - 3.5) + 'deg)';
+      el.style.background = 'linear-gradient(' + (150 + (h >>> 5) % 60) + 'deg, hsl(' + hue + ',70%,80%), hsl(' + hue + ',68%,68%))';
+      el.style.transform = 'rotate(' + ((h >>> 3) % 70 / 10 - 3.5) + 'deg)';
+      el.addEventListener('click', function () { askResolve(it); });
       row.appendChild(el);
-      fitFont(el, side);
+      notes.push(el);
     });
+    fitAll(notes, side);
   }
 
   function start() {
