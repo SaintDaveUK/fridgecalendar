@@ -5,6 +5,10 @@
       "list": "Recurring Tasks"
     },
     {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -38,8 +42,9 @@
       "list": "To Do"
     },
     {
-      "name": "Set up a separate WiFi with VPN active",
-      "list": "To Do"
+      "name": "NordVPN",
+      "list": "To Do",
+      "added": "2026-10-22T17:35:40.894Z"
     },
     {
       "name": "Pick up more autumn 🍁",
@@ -64,10 +69,6 @@
     {
       "name": "Buy mattress cover",
       "list": "To Do"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
     }
   ]
 }
