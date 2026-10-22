@@ -1,6 +1,10 @@
 {
   "items": [
     {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -64,10 +68,6 @@
     {
       "name": "Buy mattress cover",
       "list": "To Do"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
     }
   ]
 }
