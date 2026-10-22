@@ -580,7 +580,7 @@ function render7Day() {
       const chip = document.createElement('div');
       chip.className = 'sd-event multiday';
       const ms = noteStyle(ev.title || '', date);
-      chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+      chip.style.cssText = `transform:rotate(${ms.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:normal;overflow-wrap:break-word;overflow:hidden;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
       applyNoteBg(chip, ms);
       chip.style.whiteSpace = 'pre-line';
       chip.textContent = stackVs(flagTitle(ev.title)) || 'Event';
@@ -596,13 +596,13 @@ function render7Day() {
         const chip = document.createElement('div');
         chip.className = 'sd-event';
         const ns = noteStyle(ev.title || '', date);
-        chip.style.cssText = `transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:break-word;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
+        chip.style.cssText = `transform:rotate(${ns.rotation}deg);color:rgba(0,0,0,0.72);flex-shrink:0;aspect-ratio:1/1;height:calc(100% - 10px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;border-radius:3px;border-top:3px solid rgba(0,0,0,0.15);font-size:2.8rem;font-weight:600;word-break:normal;overflow-wrap:break-word;overflow:hidden;box-shadow:2px 3px 7px rgba(0,0,0,0.25);`;
         applyNoteBg(chip, ns);
         const allDay = ev.start.getHours() === 0 && ev.start.getMinutes() === 0;
         if (!allDay) {
           const timeDiv = document.createElement('div');
           timeDiv.style.fontWeight = '800';
-          timeDiv.style.fontSize = '3rem';
+          timeDiv.style.fontSize = '1.07em';
           timeDiv.style.whiteSpace = 'nowrap';
           timeDiv.style.marginBottom = '2px';
           timeDiv.textContent = formatTimeRange(ev);
@@ -619,6 +619,17 @@ function render7Day() {
 
     col.appendChild(eventsDiv);
     container.appendChild(col);
+  }
+  container.querySelectorAll('.sd-event').forEach(fitNote);
+}
+
+// Shrink an event note's text until it fits inside the square note
+function fitNote(chip) {
+  let size = parseFloat(getComputedStyle(chip).fontSize);
+  const min = size * 0.3;
+  while (size > min && (chip.scrollHeight > chip.clientHeight + 1 || chip.scrollWidth > chip.clientWidth + 1)) {
+    size -= 1;
+    chip.style.fontSize = size + 'px';
   }
 }
 
