@@ -317,8 +317,10 @@ body {
 }
 
 .sd-col.weekend {
-  background: rgba(255, 200, 100, 0.05);
+  background: rgba(255, 170, 60, 0.16);
 }
+
+.sd-col.weekend .sd-dayname { color: #e3a857; }
 
 .sd-col.today-col {
   background: rgba(88, 166, 255, 0.08);
