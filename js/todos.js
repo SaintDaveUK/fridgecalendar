@@ -63,18 +63,34 @@ window.Todos = (function () {
       (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
   }
 
-  // Each note gets the largest font that fits its own text (whole words, no mid-word breaks), capped so
-  // short items don't dwarf the rest and one long item can't shrink every note.
+  // Each note gets the largest font that fits its own text with whole words (no mid-word breaks), capped so
+  // short items don't dwarf the rest. Measured with offsetWidth/offsetHeight of an inner span rather than
+  // scrollWidth/clientWidth, which are unreliable on the fridge's older browser.
   function fitAll(notes, side) {
-    const cap = Math.floor(side * 0.24);
+    const avail = side - 14;   // note padding + rotation slack
+    const cap = Math.floor(side * 0.32);
     notes.forEach(el => {
-      let lo = 10, hi = cap;
+      const inner = el.firstChild;
+      const text = inner.textContent;
+      inner.style.width = avail + 'px';
+
+      // The longest word must fit on one line: measure it once at 100px, font scales linearly
+      const probe = document.createElement('span');
+      probe.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;font-size:100px;';
+      const longest = text.split(/\s+/).reduce((m, w) => (w.length > m.length ? w : m), '');
+      probe.textContent = longest;
+      el.appendChild(probe);
+      const w100 = probe.offsetWidth;
+      el.removeChild(probe);
+      const byWord = w100 > 0 ? Math.floor(avail / w100 * 100) : cap;
+
+      let lo = 8, hi = Math.max(lo, Math.min(cap, byWord));
       while (lo < hi) {
         const mid = Math.ceil((lo + hi) / 2);
-        el.style.fontSize = mid + 'px';
-        if (el.scrollHeight <= el.clientHeight && el.scrollWidth <= el.clientWidth) lo = mid; else hi = mid - 1;
+        inner.style.fontSize = mid + 'px';
+        if (inner.offsetHeight <= avail) lo = mid; else hi = mid - 1;
       }
-      el.style.fontSize = lo + 'px';
+      inner.style.fontSize = lo + 'px';
     });
   }
 
@@ -135,6 +151,13 @@ window.Todos = (function () {
     document.body.appendChild(btn);
   }
 
+  // Re-fit once web fonts and layout are settled (the first render can run before they are)
+  function refitLater() {
+    window.addEventListener('load', function () { render(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(); });
+    setTimeout(function () { render(); }, 2000);
+  }
+
   function render(advance) {
     const row = document.getElementById('todo-row');
     if (!row) return;
@@ -166,7 +189,10 @@ window.Todos = (function () {
       const hue = h % 360;
       const el = document.createElement('div');
       el.className = 'todo-note deco-' + DECOS[(h >>> 9) % DECOS.length] + (isNew(it) ? ' todo-new' : '');
-      el.textContent = it.name;
+      const inner = document.createElement('span');
+      inner.className = 'todo-text';
+      inner.textContent = it.name;
+      el.appendChild(inner);
       el.title = it.list;
       el.dataset.sticker = STICKERS[(h >>> 13) % STICKERS.length];
       el.style.width = side + 'px';
@@ -184,6 +210,7 @@ window.Todos = (function () {
     load();
     render();
     refresh();
+    refitLater();
     setInterval(refresh, 10 * 60 * 1000);
     setInterval(function () { render(true); }, PAGE_MS);   // next page of the shuffled deck
   }

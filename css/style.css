@@ -661,3 +661,5 @@ body.widget-mode #widget { display: flex; }
 .todo-dialog-btns { display: flex; gap: 20px; justify-content: center; }
 .todo-dialog-btns button { font-size: 34px; padding: 12px 40px; border: 0; border-radius: 8px; background: #4caf50; color: #fff; cursor: pointer; }
 .todo-dialog-btns button:last-child { background: #555; }
+
+.todo-text { display: block; text-align: center; word-break: normal; overflow-wrap: normal; }
