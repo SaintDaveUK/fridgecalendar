@@ -63,16 +63,19 @@ window.Todos = (function () {
       (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
   }
 
-  // One font size for every note on the page: the largest at which all texts fit (whole words, no mid-word breaks)
+  // Each note gets the largest font that fits its own text (whole words, no mid-word breaks), capped so
+  // short items don't dwarf the rest and one long item can't shrink every note.
   function fitAll(notes, side) {
-    const fits = () => notes.every(el => el.scrollHeight <= el.clientHeight && el.scrollWidth <= el.clientWidth);
-    let lo = 10, hi = Math.floor(side * 0.3);
-    while (lo < hi) {
-      const mid = Math.ceil((lo + hi) / 2);
-      notes.forEach(el => { el.style.fontSize = mid + 'px'; });
-      if (fits()) lo = mid; else hi = mid - 1;
-    }
-    notes.forEach(el => { el.style.fontSize = lo + 'px'; });
+    const cap = Math.floor(side * 0.24);
+    notes.forEach(el => {
+      let lo = 10, hi = cap;
+      while (lo < hi) {
+        const mid = Math.ceil((lo + hi) / 2);
+        el.style.fontSize = mid + 'px';
+        if (el.scrollHeight <= el.clientHeight && el.scrollWidth <= el.clientWidth) lo = mid; else hi = mid - 1;
+      }
+      el.style.fontSize = lo + 'px';
+    });
   }
 
   const STICKERS = ['\u2B50', '\u2764\uFE0F', '\uD83C\uDF40', '\uD83C\uDF1F', '\uD83C\uDF3C', '\uD83D\uDD25', '\uD83C\uDF08', '\uD83D\uDC1E', '\uD83C\uDF4E', '\u26A1', '\uD83C\uDF19', '\uD83C\uDF88'];
