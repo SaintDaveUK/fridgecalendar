@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -42,6 +38,16 @@
       "list": "To Do"
     },
     {
+      "name": "Buy Leo's winter clothes",
+      "list": "To Do",
+      "added": "2026-10-23T09:20:54.325Z"
+    },
+    {
+      "name": "Dave return jacket",
+      "list": "To Do",
+      "added": "2026-10-22T17:38:46.520Z"
+    },
+    {
       "name": "NordVPN",
       "list": "To Do",
       "added": "2026-10-22T17:35:40.894Z"
@@ -71,9 +77,8 @@
       "list": "To Do"
     },
     {
-      "name": "Dave return jacket",
-      "list": "To Do",
-      "added": "2026-10-22T17:38:46.520Z"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     }
   ]
 }
