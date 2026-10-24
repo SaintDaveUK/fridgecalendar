@@ -5,6 +5,20 @@
       "list": "Things To Buy"
     },
     {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -75,20 +89,6 @@
     {
       "name": "Buy mattress cover",
       "list": "To Do"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
     }
   ]
 }
