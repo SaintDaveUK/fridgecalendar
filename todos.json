@@ -1,9 +1,8 @@
 {
   "items": [
     {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
       "name": "Clean pincho",
@@ -92,8 +91,9 @@
       "list": "To Do"
     },
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
     }
   ]
 }
