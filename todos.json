@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -95,6 +91,10 @@
       "name": "Spice rack situation",
       "list": "To Do",
       "added": "2026-10-26T05:50:04.133Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
       "name": "Te descafeinado",
