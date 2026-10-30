@@ -1,6 +1,20 @@
 {
   "items": [
     {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -86,20 +100,6 @@
       "name": "Spice rack situation",
       "list": "To Do",
       "added": "2026-10-26T05:50:04.133Z"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
     }
   ]
 }
