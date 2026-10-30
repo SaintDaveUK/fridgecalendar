@@ -1,11 +1,6 @@
 {
   "items": [
     {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -18,10 +13,6 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -100,6 +91,15 @@
       "name": "Spice rack situation",
       "list": "To Do",
       "added": "2026-10-26T05:50:04.133Z"
+    },
+    {
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     }
   ]
 }
