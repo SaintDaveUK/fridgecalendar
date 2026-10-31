@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -95,6 +91,10 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
       "name": "Te descafeinado",
