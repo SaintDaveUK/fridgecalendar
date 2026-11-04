@@ -1,6 +1,21 @@
 {
   "items": [
     {
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
+    },
+    {
+      "name": "Soy sauce",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -95,21 +110,6 @@
     {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
-    },
-    {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
-    },
-    {
-      "name": "Soy sauce",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
     }
   ]
 }
