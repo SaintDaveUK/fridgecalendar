@@ -1,6 +1,10 @@
 {
   "items": [
     {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -98,10 +102,6 @@
       "name": "Lamb gravy",
       "list": "Grocery List",
       "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
     }
   ]
 }
