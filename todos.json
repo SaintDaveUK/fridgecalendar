@@ -15,21 +15,6 @@
       "added": "2026-10-24T15:06:40.222Z"
     },
     {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
-    },
-    {
-      "name": "Soy sauce",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -39,10 +24,6 @@
     },
     {
       "name": "New toys for Leo for Christmas",
-      "list": "To Do"
-    },
-    {
-      "name": "Pick up TIE",
       "list": "To Do"
     },
     {
@@ -78,10 +59,6 @@
       "added": "2026-10-22T17:35:40.894Z"
     },
     {
-      "name": "Pick up more autumn 🍁",
-      "list": "To Do"
-    },
-    {
       "name": "Leo's psicologist appointments",
       "list": "To Do"
     },
@@ -110,6 +87,21 @@
       "name": "Spice rack situation",
       "list": "To Do",
       "added": "2026-10-26T05:50:04.133Z"
+    },
+    {
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
+    },
+    {
+      "name": "Soy sauce",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
     }
   ]
 }
