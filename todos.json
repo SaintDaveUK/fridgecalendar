@@ -1,18 +1,23 @@
 {
   "items": [
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
     },
     {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Soy sauce",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -85,23 +90,18 @@
       "added": "2026-10-26T05:50:04.133Z"
     },
     {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
-      "name": "Soy sauce",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     },
     {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     }
   ]
 }
