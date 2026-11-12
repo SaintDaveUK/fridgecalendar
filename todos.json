@@ -1,10 +1,6 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
       "name": "Te descafeinado",
       "list": "Grocery List",
       "added": "2026-10-25T08:56:40.811Z"
@@ -94,6 +90,10 @@
       "name": "Xmas Present Eden & Jonah",
       "list": "To Do",
       "added": "2026-11-11T21:45:54.525Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
       "name": "Clean pincho",
