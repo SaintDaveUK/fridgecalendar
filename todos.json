@@ -1,39 +1,6 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Te descafeinado",
-      "list": "Grocery List",
-      "added": "2026-10-25T08:56:40.811Z"
-    },
-    {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Papel horno",
-      "list": "Grocery List",
-      "added": "2026-11-09T11:27:48.836Z"
-    },
-    {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -108,6 +75,39 @@
       "name": "Xmas Present Eden & Jonah",
       "list": "To Do",
       "added": "2026-11-11T21:45:54.525Z"
+    },
+    {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Te descafeinado",
+      "list": "Grocery List",
+      "added": "2026-10-25T08:56:40.811Z"
+    },
+    {
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
+      "name": "Papel horno",
+      "list": "Grocery List",
+      "added": "2026-11-09T11:27:48.836Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     }
   ]
 }
