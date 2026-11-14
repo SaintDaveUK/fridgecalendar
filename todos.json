@@ -1,6 +1,21 @@
 {
   "items": [
     {
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
+    },
+    {
+      "name": "Papel horno",
+      "list": "Grocery List",
+      "added": "2026-11-09T11:27:48.836Z"
+    },
+    {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -108,21 +123,6 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Papel horno",
-      "list": "Grocery List",
-      "added": "2026-11-09T11:27:48.836Z"
-    },
-    {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
     }
   ]
 }
