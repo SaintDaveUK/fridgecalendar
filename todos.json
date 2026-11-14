@@ -1,6 +1,20 @@
 {
   "items": [
     {
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
+    },
+    {
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -8,21 +22,6 @@
       "name": "Pencils",
       "list": "Things To Buy",
       "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
-    },
-    {
-      "name": "Papel horno",
-      "list": "Grocery List",
-      "added": "2026-11-09T11:27:48.836Z"
-    },
-    {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -111,18 +110,19 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
     },
     {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Papel horno",
+      "list": "Grocery List",
+      "added": "2026-11-09T11:27:48.836Z"
     },
     {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
     }
   ]
 }
