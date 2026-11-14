@@ -78,15 +78,6 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -114,6 +105,15 @@
       "name": "Belows",
       "list": "Grocery List",
       "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     }
   ]
 }
