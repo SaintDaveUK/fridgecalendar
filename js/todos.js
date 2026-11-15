@@ -27,12 +27,12 @@ window.Todos = (function () {
     render();
   }
 
-  // Notes are square, as big as fit; the whole list is paged through in a stable order
+  // One line of square notes per AnyList list; lines with more items than fit are paged through in a stable order
   const PAGE_MS = 30 * 1000;
-  const MAX_ROWS = 3, MIN_SIDE = 90;
+  const MIN_SIDE = 40, LABEL_W = 22, LINE_VH = 6.5;   // LINE_VH: height of one list line, in vh
   const NEW_MS = 48 * 60 * 60 * 1000;   // items added in the last 48h flash
   const HIDE_KEY = 'todos_hidden';
-  let pos = 0;
+  const linePos = {};   // paging position per list line
 
   const keyOf = i => i.list + '\u0001' + i.name;
   function hash(str) {
@@ -166,42 +166,51 @@ window.Todos = (function () {
     applyHidden();
     if (!items.length || isHidden()) return;
 
-    // Square notes: fewest rows that hold everything (biggest notes), else MAX_ROWS rows paged
-    const W = row.clientWidth - 16, H = row.clientHeight;
-    let rows = 1, side = 0, perRow = 1;
-    for (rows = 1; rows <= MAX_ROWS; rows++) {
-      side = Math.max(MIN_SIDE, Math.min((H - GAP * (rows - 1)) / rows, W));
-      perRow = Math.max(1, Math.floor((W + GAP) / (side + GAP)));
-      if (rows * perRow >= items.length) break;
-    }
-    rows = Math.min(rows, MAX_ROWS);
-    side = Math.floor(Math.max(MIN_SIDE, Math.min((H - GAP * (rows - 1)) / rows, W)));
-    const perPage = Math.min(items.length, rows * perRow);
+    // One line per AnyList list; the section grows with the number of lists
+    const groups = {};
+    ordered().forEach(it => { (groups[it.list] = groups[it.list] || []).push(it); });
+    const names = Object.keys(groups).sort();
+    row.style.height = Math.max(14, Math.min(30, names.length * LINE_VH)) + 'vh';
 
-    // Page through the stable list; wrap around (also if items were removed)
-    const deck = ordered();
-    if (advance) pos += perPage;
-    if (pos >= deck.length) pos = 0;
+    const W = row.clientWidth - 16, H = row.clientHeight;
+    const side = Math.floor(Math.max(MIN_SIDE, Math.min((H - GAP * (names.length - 1)) / names.length, 150)));
+    const perLine = Math.max(1, Math.floor((W - LABEL_W - GAP + GAP) / (side + GAP)));
 
     const notes = [];
-    deck.slice(pos, pos + perPage).forEach(it => {
-      const h = hash(it.name);
-      const hue = h % 360;
-      const el = document.createElement('div');
-      el.className = 'todo-note deco-' + DECOS[(h >>> 9) % DECOS.length] + (isNew(it) ? ' todo-new' : '');
-      const inner = document.createElement('span');
-      inner.className = 'todo-text';
-      inner.textContent = it.name;
-      el.appendChild(inner);
-      el.title = it.list;
-      el.dataset.sticker = STICKERS[(h >>> 13) % STICKERS.length];
-      el.style.width = side + 'px';
-      el.style.height = side + 'px';
-      el.style.background = 'linear-gradient(' + (150 + (h >>> 5) % 60) + 'deg, hsl(' + hue + ',70%,80%), hsl(' + hue + ',68%,68%))';
-      el.style.transform = 'rotate(' + ((h >>> 3) % 70 / 10 - 3.5) + 'deg)';
-      el.addEventListener('click', function () { askResolve(it); });
-      row.appendChild(el);
-      notes.push(el);
+    names.forEach(name => {
+      const list = groups[name];
+      // Lines with more items than fit page independently, wrapping around (also if items were removed)
+      if (advance && list.length > perLine) linePos[name] = (linePos[name] || 0) + perLine;
+      if (!linePos[name] || linePos[name] >= list.length) linePos[name] = 0;
+
+      const line = document.createElement('div');
+      line.className = 'todo-line';
+      const label = document.createElement('div');
+      label.className = 'todo-label';
+      label.textContent = name;
+      label.style.width = LABEL_W + 'px';
+      line.appendChild(label);
+
+      list.slice(linePos[name], linePos[name] + perLine).forEach(it => {
+        const h = hash(it.name);
+        const hue = h % 360;
+        const el = document.createElement('div');
+        el.className = 'todo-note deco-' + DECOS[(h >>> 9) % DECOS.length] + (isNew(it) ? ' todo-new' : '');
+        const inner = document.createElement('span');
+        inner.className = 'todo-text';
+        inner.textContent = it.name;
+        el.appendChild(inner);
+        el.title = it.list;
+        el.dataset.sticker = STICKERS[(h >>> 13) % STICKERS.length];
+        el.style.width = side + 'px';
+        el.style.height = side + 'px';
+        el.style.background = 'linear-gradient(' + (150 + (h >>> 5) % 60) + 'deg, hsl(' + hue + ',70%,80%), hsl(' + hue + ',68%,68%))';
+        el.style.transform = 'rotate(' + ((h >>> 3) % 70 / 10 - 3.5) + 'deg)';
+        el.addEventListener('click', function () { askResolve(it); });
+        line.appendChild(el);
+        notes.push(el);
+      });
+      row.appendChild(line);
     });
     fitAll(notes, side);
   }

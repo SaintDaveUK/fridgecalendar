@@ -595,9 +595,7 @@ body.widget-mode #widget { display: flex; }
 
 #todo-row {
   display: flex;
-  flex-flow: row wrap;
-  align-content: center;
-  align-items: center;
+  flex-flow: column nowrap;
   justify-content: center;
   gap: 8px;
   height: 20vh;
@@ -663,3 +661,6 @@ body.widget-mode #widget { display: flex; }
 .todo-dialog-btns button:last-child { background: #555; }
 
 .todo-text { display: block; text-align: center; word-break: normal; overflow-wrap: normal; }
+
+.todo-line { display: flex; flex-flow: row nowrap; align-items: center; gap: 8px; flex: none; }
+.todo-label { flex: none; align-self: stretch; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-size: 13px; letter-spacing: 1px; color: rgba(255,255,255,0.55); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
