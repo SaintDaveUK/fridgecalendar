@@ -1,18 +1,13 @@
 {
   "items": [
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     },
     {
       "name": "Lamb gravy",
@@ -30,13 +25,18 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     },
     {
       "name": "Decide what to do with living room carpet",
