@@ -29,7 +29,7 @@ window.Todos = (function () {
 
   // One line of square notes per AnyList list; lines with more items than fit are paged through in a stable order
   const PAGE_MS = 30 * 1000;
-  const MIN_SIDE = 40, LABEL_W = 22, LINE_VH = 6.5;   // LINE_VH: height of one list line, in vh
+  const MIN_SIDE = 40, LABEL_W = 50, LINE_VH = 6.5;   // LINE_VH: height of one list line, in vh
   const NEW_MS = 48 * 60 * 60 * 1000;   // items added in the last 48h flash
   const HIDE_KEY = 'todos_hidden';
   const linePos = {};   // paging position per list line

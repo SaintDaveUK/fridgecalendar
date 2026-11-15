@@ -663,4 +663,4 @@ body.widget-mode #widget { display: flex; }
 .todo-text { display: block; text-align: center; word-break: normal; overflow-wrap: normal; }
 
 .todo-line { display: flex; flex-flow: row nowrap; align-items: center; gap: 8px; flex: none; }
-.todo-label { flex: none; align-self: stretch; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-size: 13px; letter-spacing: 1px; color: rgba(255,255,255,0.55); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.todo-label { flex: none; align-self: stretch; writing-mode: vertical-rl; transform: rotate(180deg); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 20px; font-weight: 600; line-height: 1.1; color: #fff; background: rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; }
