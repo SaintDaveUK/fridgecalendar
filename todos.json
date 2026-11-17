@@ -10,24 +10,18 @@
       "added": "2026-11-14T10:00:40.804Z"
     },
     {
-      "name": "Lamb gravy",
-      "list": "Grocery List",
-      "added": "2026-11-01T09:52:45.943Z"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     },
     {
-      "name": "1 can black beer",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -107,18 +101,24 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
+      "name": "Lamb gravy",
+      "list": "Grocery List",
+      "added": "2026-11-01T09:52:45.943Z"
     },
     {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
+      "name": "1 can black beer",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
     }
   ]
 }
