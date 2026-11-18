@@ -1,6 +1,16 @@
 {
   "items": [
     {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
+    },
+    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -99,16 +109,6 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
     }
   ]
 }
