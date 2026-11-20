@@ -1,16 +1,6 @@
 {
   "items": [
     {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
-    },
-    {
       "name": "Replacement pasta pot",
       "list": "Things To Buy"
     },
@@ -109,6 +99,16 @@
       "name": "Xmas present for Vera and Emi",
       "list": "To Do",
       "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
     }
   ]
 }
