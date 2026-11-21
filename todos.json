@@ -1,6 +1,16 @@
 {
   "items": [
     {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
+    },
+    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -22,16 +32,6 @@
       "name": "Pencils",
       "list": "Things To Buy",
       "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
     },
     {
       "name": "Decide what to do with living room carpet",
