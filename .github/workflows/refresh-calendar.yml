@@ -1,4 +1,4 @@
-﻿name: Refresh Calendar Data
+name: Refresh Calendar Data
 
 on:
   schedule:
@@ -25,5 +25,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git add calendar.ics
-          git diff --staged --quiet || git commit -m "Refresh calendar data"
-          git push origin HEAD:gh-pages
+          git diff --staged --quiet && exit 0
+          git commit -m "Refresh calendar data"
+          # The AnyList sync also pushes to gh-pages, so rebase and retry if we lose the race.
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin gh-pages && git push origin HEAD:gh-pages && exit 0
+            echo "Push attempt $i failed, retrying..."
+            sleep $((i * 3))
+          done
+          exit 1
