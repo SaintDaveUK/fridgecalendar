@@ -1,6 +1,15 @@
 {
   "items": [
     {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
+    },
+    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -125,15 +134,6 @@
       "name": "Xmas present for Vera and Emi",
       "list": "To Do",
       "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
     }
   ]
 }
