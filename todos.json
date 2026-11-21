@@ -1,6 +1,36 @@
 {
   "items": [
     {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-15T09:16:23.915Z"
+    },
+    {
+      "name": "Shampoo",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:13:10.799Z"
+    },
+    {
+      "name": "Conditioner",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:13:10.799Z"
+    },
+    {
+      "name": "Macaroni",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:16:13.706Z"
+    },
+    {
+      "name": "Cheddar Cheese",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:16:13.706Z"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -78,45 +108,6 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-15T09:16:23.915Z"
-    },
-    {
-      "name": "Shampoo",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:13:10.799Z"
-    },
-    {
-      "name": "Conditioner",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:13:10.799Z"
-    },
-    {
-      "name": "Macaroni",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:16:13.706Z"
-    },
-    {
-      "name": "Cheddar Cheese",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:16:13.706Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -129,6 +120,15 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     }
   ]
 }
