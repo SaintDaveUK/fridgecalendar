@@ -1,15 +1,6 @@
 {
   "items": [
     {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -144,6 +135,15 @@
       "name": "Toallitas bebé",
       "list": "Grocery List",
       "added": "2026-11-21T20:07:34.960Z"
+    },
+    {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     }
   ]
 }
