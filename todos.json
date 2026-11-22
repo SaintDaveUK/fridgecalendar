@@ -1,6 +1,51 @@
 {
   "items": [
     {
+      "name": "Toilet Paper",
+      "list": "Grocery List",
+      "added": "2026-11-21T17:33:35.757Z"
+    },
+    {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Shampoo",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:13:10.799Z"
+    },
+    {
+      "name": "Conditioner",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:13:10.799Z"
+    },
+    {
+      "name": "Macaroni",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:16:13.706Z"
+    },
+    {
+      "name": "Cheddar Cheese",
+      "list": "Grocery List",
+      "added": "2026-11-21T12:16:13.706Z"
+    },
+    {
+      "name": "Gruyère",
+      "list": "Grocery List",
+      "added": "2026-11-21T15:45:01.586Z"
+    },
+    {
+      "name": "Yogurt",
+      "list": "Grocery List",
+      "added": "2026-11-21T20:01:31.468Z"
+    },
+    {
+      "name": "Toallitas bebé",
+      "list": "Grocery List",
+      "added": "2026-11-21T20:07:34.960Z"
+    },
+    {
       "name": "Decide what to do with living room carpet",
       "list": "To Do"
     },
@@ -90,51 +135,6 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Toilet Paper",
-      "list": "Grocery List",
-      "added": "2026-11-21T17:33:35.757Z"
-    },
-    {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
-      "name": "Shampoo",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:13:10.799Z"
-    },
-    {
-      "name": "Conditioner",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:13:10.799Z"
-    },
-    {
-      "name": "Macaroni",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:16:13.706Z"
-    },
-    {
-      "name": "Cheddar Cheese",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:16:13.706Z"
-    },
-    {
-      "name": "Gruyère",
-      "list": "Grocery List",
-      "added": "2026-11-21T15:45:01.586Z"
-    },
-    {
-      "name": "Yogurt",
-      "list": "Grocery List",
-      "added": "2026-11-21T20:01:31.468Z"
-    },
-    {
-      "name": "Toallitas bebé",
-      "list": "Grocery List",
-      "added": "2026-11-21T20:07:34.960Z"
     },
     {
       "name": "Replacement pasta pot",
