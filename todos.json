@@ -1,6 +1,15 @@
 {
   "items": [
     {
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
+    },
+    {
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
+    },
+    {
       "name": "Toilet Paper",
       "list": "Grocery List",
       "added": "2026-11-21T17:33:35.757Z"
@@ -135,15 +144,6 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
     }
   ]
 }
