@@ -1,29 +1,6 @@
 {
   "items": [
     {
-      "name": "Clean pincho",
-      "list": "Recurring Tasks"
-    },
-    {
-      "name": "Groom pincho",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Meal planning",
-      "list": "Recurring Tasks",
-      "added": "2026-10-24T15:06:40.222Z"
-    },
-    {
-      "name": "Replacement pasta pot",
-      "list": "Things To Buy"
-    },
-    {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
       "name": "Toilet Paper",
       "list": "Grocery List",
       "added": "2026-11-21T17:33:35.757Z"
@@ -49,11 +26,6 @@
       "added": "2026-11-21T12:16:13.706Z"
     },
     {
-      "name": "Cheddar Cheese",
-      "list": "Grocery List",
-      "added": "2026-11-21T12:16:13.706Z"
-    },
-    {
       "name": "Gruyère",
       "list": "Grocery List",
       "added": "2026-11-21T15:45:01.586Z"
@@ -69,24 +41,27 @@
       "added": "2026-11-21T20:07:34.960Z"
     },
     {
-      "name": "Beef mince",
-      "list": "Grocery List",
-      "added": "2026-11-22T10:04:15.264Z"
+      "name": "Replacement pasta pot",
+      "list": "Things To Buy"
     },
     {
-      "name": "Tortillas",
-      "list": "Grocery List",
-      "added": "2026-11-22T10:04:15.264Z"
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     },
     {
-      "name": "Sweetcorn",
-      "list": "Grocery List",
-      "added": "2026-11-22T10:04:15.264Z"
+      "name": "Clean pincho",
+      "list": "Recurring Tasks"
     },
     {
-      "name": "Creme Fraiche",
-      "list": "Grocery List",
-      "added": "2026-11-22T10:07:18.945Z"
+      "name": "Groom pincho",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Meal planning",
+      "list": "Recurring Tasks",
+      "added": "2026-10-24T15:06:40.222Z"
     },
     {
       "name": "Decide what to do with living room carpet",
