@@ -1,16 +1,6 @@
 {
   "items": [
     {
-      "name": "Pencils",
-      "list": "Things To Buy",
-      "added": "2026-11-14T10:00:40.804Z"
-    },
-    {
-      "name": "Leña",
-      "list": "Things To Buy",
-      "added": "2026-11-22T17:24:16.373Z"
-    },
-    {
       "name": "Clean pincho",
       "list": "Recurring Tasks"
     },
@@ -23,6 +13,66 @@
       "name": "Meal planning",
       "list": "Recurring Tasks",
       "added": "2026-10-24T15:06:40.222Z"
+    },
+    {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
+    },
+    {
+      "name": "Zanahorias",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:20:42.723Z"
+    },
+    {
+      "name": "Onions",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:23:46.837Z"
+    },
+    {
+      "name": "Tomato",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:23:46.837Z"
+    },
+    {
+      "name": "1kg stewing beef",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:17:38.552Z"
+    },
+    {
+      "name": "Trappiste ale",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:17:38.552Z"
+    },
+    {
+      "name": "Beef stock",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:17:38.552Z"
+    },
+    {
+      "name": "600g apples",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:23:46.837Z"
+    },
+    {
+      "name": "Bay leaves",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:20:42.723Z"
+    },
+    {
+      "name": "Perejil fresca",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:20:42.723Z"
+    },
+    {
+      "name": "Tomato puree",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:20:42.723Z"
+    },
+    {
+      "name": "Plain flour",
+      "list": "Grocery List",
+      "added": "2026-11-28T19:20:42.723Z"
     },
     {
       "name": "Decide what to do with living room carpet",
@@ -102,64 +152,14 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
+      "name": "Pencils",
+      "list": "Things To Buy",
+      "added": "2026-11-14T10:00:40.804Z"
     },
     {
-      "name": "Zanahorias",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:20:42.723Z"
-    },
-    {
-      "name": "Onions",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:23:46.837Z"
-    },
-    {
-      "name": "Tomato",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:23:46.837Z"
-    },
-    {
-      "name": "1kg stewing beef",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:17:38.552Z"
-    },
-    {
-      "name": "Trappiste ale",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:17:38.552Z"
-    },
-    {
-      "name": "Beef stock",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:17:38.552Z"
-    },
-    {
-      "name": "600g apples",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:23:46.837Z"
-    },
-    {
-      "name": "Bay leaves",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:20:42.723Z"
-    },
-    {
-      "name": "Perejil fresca",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:20:42.723Z"
-    },
-    {
-      "name": "Tomato puree",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:20:42.723Z"
-    },
-    {
-      "name": "Plain flour",
-      "list": "Grocery List",
-      "added": "2026-11-28T19:20:42.723Z"
+      "name": "Leña",
+      "list": "Things To Buy",
+      "added": "2026-11-22T17:24:16.373Z"
     }
   ]
 }
