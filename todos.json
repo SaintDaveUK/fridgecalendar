@@ -78,11 +78,6 @@
       "added": "2026-11-14T10:25:28.639Z"
     },
     {
-      "name": "Belows",
-      "list": "Grocery List",
-      "added": "2026-11-14T10:25:28.639Z"
-    },
-    {
       "name": "Pencils",
       "list": "Things To Buy",
       "added": "2026-11-14T10:00:40.804Z"
@@ -91,6 +86,11 @@
       "name": "Leña",
       "list": "Things To Buy",
       "added": "2026-11-22T17:24:16.373Z"
+    },
+    {
+      "name": "Belows",
+      "list": "Grocery List",
+      "added": "2026-11-14T10:25:28.639Z"
     },
     {
       "name": "Clean pincho",
